@@ -3,7 +3,10 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "DADABADA",
   description: "Database for AI agents. Schemaless record database with writer-based access control (WBAC). Let your agents share one store without an admin in the loop.",
-  cleanUrls: true,
+  // Links end in .html: the site is served as plain files (S3 behind CloudFront at dadabada.skapi.com), which
+  // finds /guide.html but not /guide. With clean URLs, any page opened directly (a bookmark, a shared link, a
+  // refresh) would show the 404 page. Turn this back on only where the host serves foo.html for /foo.
+  cleanUrls: false,
   // one code theme for both modes: light text on a dark block, so code reads the same everywhere
   markdown: { theme: 'github-dark' },
   lastUpdated: false,
@@ -13,6 +16,10 @@ export default defineConfig({
   head: [
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     ['meta', { name: 'theme-color', content: '#ffffff' }],
+    // An address without a file extension (a link from before pages ended in .html, such as
+    // /introduction/getting-started) reaches the 404 page on this host. Send it on to the .html page.
+    // Pages served normally end in .html, so this does nothing there.
+    ['script', {}, `(function(){var p=location.pathname;if(p!=='/'&&!/\\/$/.test(p)&&!/\\.[a-z0-9]+$/i.test(p))location.replace(p+'.html'+location.search+location.hash)})()`],
   ],
   themeConfig: {
     logo: { light: '/logo.svg', dark: '/logo-dark.svg', alt: 'DADABADA' },

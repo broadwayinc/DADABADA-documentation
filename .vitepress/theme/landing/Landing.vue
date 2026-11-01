@@ -14,10 +14,10 @@ const dataPairs = computed(() => Object.entries(ex.value.data))
 const INSTALL = 'curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh'
 
 const access = [
-  { t: 'Access levels', link: '/database/access-levels', d: 'Every user has an access\u00a0level from 00\u00a0to\u00a099, set by the admin. A record saved at access\u00a0level\u00a005 can be read by users at\u00a005 and above. Nobody saves above their own access\u00a0level.' },
-  { t: 'Private records', link: '/database/access-levels#who-can-read-what', d: 'A record at access\u00a0level\u00a0** can be read only by its writer and the users the writer grants it to.' },
-  { t: 'Grants and access keys', link: '/database/access-levels#granting-access-to-a-record', d: 'Share one record with named users, or hand out a private access key that opens it for a limited time.' },
-  { t: 'Rules for references', link: '/database/referencing', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
+  { t: 'Access levels', link: '/database/access-levels.html', d: 'Every user has an access\u00a0level from 00\u00a0to\u00a099, set by the admin. A record saved at access\u00a0level\u00a005 can be read by users at\u00a005 and above. Nobody saves above their own access\u00a0level.' },
+  { t: 'Private records', link: '/database/access-levels.html#who-can-read-what', d: 'A record at access\u00a0level\u00a0** can be read only by its writer and the users the writer grants it to.' },
+  { t: 'Grants and access keys', link: '/database/access-levels.html#granting-access-to-a-record', d: 'Share one record with named users, or hand out a private access key that opens it for a limited time.' },
+  { t: 'Rules for references', link: '/database/referencing.html', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
 ]
 
 const simple = [
@@ -49,8 +49,8 @@ const steps = [
           <p class="sub">Let your agents work on your data without an admin in the loop.</p>
           <CmdLine class="hero-cmd" :cmd="INSTALL" />
           <div class="actions">
-            <a class="btn brand" href="/introduction/getting-started">Get started</a>
-            <a class="btn alt" href="/introduction/what-is-dadabada">What is DADABADA?</a>
+            <a class="btn brand" href="/introduction/getting-started.html">Get started</a>
+            <a class="btn alt" href="/introduction/what-is-dadabada.html">What is DADABADA?</a>
           </div>
           <ul class="hero-facts">
             <li>Linux&nbsp;x86_64 and&nbsp;arm64</li>
@@ -147,7 +147,7 @@ const steps = [
   <span class="ck">"agent"</span>: { <span class="ck">"key_id"</span>: <span class="cs">"mtxBMs"</span>, <span class="ck">"name"</span>: <span class="cs">"shop-bot"</span> },
   <span class="ck">"data"</span>: { <span class="ck">"title"</span>: <span class="cs">"Desk Lamp"</span> }
 }</code></pre>
-            <a class="more" href="/users/agent-keys">Agent keys</a>
+            <a class="more" href="/users/agent-keys.html">Agent keys</a>
           </div>
         </div>
       </div>
@@ -165,7 +165,7 @@ const steps = [
             <p>DADABADA gives every user a salt and the settings to derive a key from their password with Argon2id. The
               key is made and used on the user's device, the same on every device they sign in on. The server stores
               only the result.</p>
-            <a class="more" href="/users/encryption">Client-side encryption</a>
+            <a class="more" href="/users/encryption.html">Client-side encryption</a>
           </div>
           <figure class="fig">
             <CryptoDiagram />
@@ -202,7 +202,7 @@ const steps = [
               query, add users and agent keys, change settings, take backups, and stop or restart the server.</p>
             <p>It stays off until the operating system user who runs DADABADA sets its password on the server. Nobody
               can turn it on from the outside.</p>
-            <a class="more" href="/admin/web-admin">Web admin</a>
+            <a class="more" href="/admin/web-admin.html">Web admin</a>
           </div>
         </div>
         <figure class="shot">
@@ -228,7 +228,7 @@ const steps = [
           </li>
         </ol>
         <p class="after">DADABADA speaks plain HTTP by default: run it behind HTTPS, or set it up with
-          <code>--tls</code>. <a href="/introduction/getting-started">Getting started</a> walks through the first
+          <code>--tls</code>. <a href="/introduction/getting-started.html">Getting started</a> walks through the first
           user, record and query.</p>
       </div>
     </section>
@@ -253,8 +253,8 @@ const steps = [
         <h2>Free and open source</h2>
         <p>DADABADA is licensed under <span class="nw">Apache-2.0</span>. Use it, read it, change it.</p>
         <div class="actions center">
-          <a class="btn brand" href="/introduction/getting-started">Get started</a>
-          <a class="btn alt" href="/introduction/what-is-dadabada">Read the docs</a>
+          <a class="btn brand" href="/introduction/getting-started.html">Get started</a>
+          <a class="btn alt" href="/introduction/what-is-dadabada.html">Read the docs</a>
         </div>
       </div>
     </section>
