@@ -41,7 +41,7 @@ token, user = answer["token"], answer["user"]
 ```
 
 ```text [User shell]
-$ dadabada connect localhost:7070 --user carol
+$ ddbd connect localhost:7070 --user carol
 Password: carolpw
 Signed in as carol (level 00).
 ```

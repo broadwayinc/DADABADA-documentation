@@ -3,19 +3,19 @@
 The admin shell is the terminal tool of the operating system user who runs DADABADA. With it that user adds users and sets their access levels, reads and deletes any record, manages agent keys, backs up, exports and imports, and turns the Web Admin on or off. It reaches the server through a Unix socket in the data folder, never over the network, and no access level gives a network user these powers.
 
 ```bash
-$ dadabada admin --data /srv/dadabada
+$ ddbd admin --data /srv/dadabada
 ```
 
 ```
 DADABADA admin shell. Type `help` for commands.
-dadabada admin> user add alice --level 10
+ddbd admin> user add alice --level 10
 Password for alice: ...
 Added alice (user id DS4gIE0n, level 10).
-dadabada admin> status
-dadabada admin> exit
+ddbd admin> status
+ddbd admin> exit
 ```
 
-Prompt: `dadabada admin>`. Options can be written with a space or with `=`: `--level 10` or `--level=10`. `help` lists the commands; `exit`, `quit` or Ctrl-D leaves. Where a command takes `<username>`, a username or a user id works. Errors are printed as `<code>: <message>`, for example `NOT_FOUND: There is no user "bob".`
+Prompt: `ddbd admin>`. Options can be written with a space or with `=`: `--level 10` or `--level=10`. `help` lists the commands; `exit`, `quit` or Ctrl-D leaves. Where a command takes `<username>`, a username or a user id works. Errors are printed as `<code>: <message>`, for example `NOT_FOUND: There is no user "bob".`
 
 ## Users
 
@@ -30,25 +30,25 @@ Prompt: `dadabada admin>`. Options can be written with a space or with `=`: `--l
 There is no sign-up and no password reset: every account is made here (or on the Users page of the [Web Admin](/admin/web-admin)), and a user who lost the password gets a fresh account with `user del` and `user add`. See [Login and Sessions](/users/login).
 
 ```bash
-$ dadabada admin --data /srv/dadabada user add alice --level 10
-$ dadabada admin --data /srv/dadabada user list
-$ dadabada admin --data /srv/dadabada user level alice 20
-$ dadabada admin --data /srv/dadabada user del alice --yes
+$ ddbd admin --data /srv/dadabada user add alice --level 10
+$ ddbd admin --data /srv/dadabada user list
+$ ddbd admin --data /srv/dadabada user level alice 20
+$ ddbd admin --data /srv/dadabada user del alice --yes
 ```
 
 ## One command or the shell
 
-`dadabada admin` runs one command when it is given on the command line, and opens the shell when it is not.
+`ddbd admin` runs one command when it is given on the command line, and opens the shell when it is not.
 
 | form | what happens |
 |---|---|
-| `dadabada admin --data <folder> status` | runs `status`, prints the answer, exits. Good for scripts and cron |
-| `dadabada admin --data <folder>` | opens the shell; type commands until `exit` |
+| `ddbd admin --data <folder> status` | runs `status`, prints the answer, exits. Good for scripts and cron |
+| `ddbd admin --data <folder>` | opens the shell; type commands until `exit` |
 
 Both work only while the server runs. Put `--data` before the command. The shell talks to the server over a Unix socket, `admin.sock`, in the data folder (mode 0600), and the server answers only connections from the operating system user who started it. From another account, run it as that user:
 
 ```bash
-$ sudo -u dadabada dadabada admin --data /srv/dadabada status
+$ sudo -u dadabada ddbd admin --data /srv/dadabada status
 ```
 
 ::: warning
@@ -68,7 +68,7 @@ Only the OS user can use the socket. There is no admin password for the shell an
 The admin reads every record whatever its level, including `**`, and deletes any record, including read-only ones. `query` takes the same JSON a client would send:
 
 ```
-dadabada admin> query '{"query":{"collection":"products","index":{"name":"price","value":1000,"condition":">="}},"fetch":{"limit":20}}'
+ddbd admin> query '{"query":{"collection":"products","index":{"name":"price","value":1000,"condition":">="}},"fetch":{"limit":20}}'
 ```
 
 ## Catalog
@@ -83,9 +83,9 @@ dadabada admin> query '{"query":{"collection":"products","index":{"name":"price"
 | `uniques [<op> <text>]` | `--json` |
 
 ```
-dadabada admin> collections >= prod
-dadabada admin> indexes products shop.
-dadabada admin> indexes products --order number_of_records
+ddbd admin> collections >= prod
+ddbd admin> indexes products shop.
+ddbd admin> indexes products --order number_of_records
 ```
 
 ## Agent keys
@@ -112,11 +112,11 @@ Users make and revoke their own keys over the API (see [Agent Keys](/users/agent
 | `import <file>` | `--replace` (overwrite existing users and records), `--skip-existing` (the default) | loads an export. Reports counts, skipped and failed lines, and the first 20 failed lines with their line numbers |
 
 ```bash
-$ dadabada admin --data /srv/dadabada backup /srv/backups/dadabada-2026-10-29
-$ dadabada admin --data /srv/dadabada export /srv/exports/all.jsonl
-$ dadabada admin --data /srv/dadabada export /srv/exports/products.jsonl --collection products
-$ dadabada admin --data /srv/dadabada import /srv/exports/all.jsonl --replace
-$ dadabada admin --data /srv/dadabada web-password
+$ ddbd admin --data /srv/dadabada backup /srv/backups/dadabada-2026-10-29
+$ ddbd admin --data /srv/dadabada export /srv/exports/all.jsonl
+$ ddbd admin --data /srv/dadabada export /srv/exports/products.jsonl --collection products
+$ ddbd admin --data /srv/dadabada import /srv/exports/all.jsonl --replace
+$ ddbd admin --data /srv/dadabada web-password
 ```
 
 `backup`, `export` and `import` take paths on the server machine, and the server process reads or writes the files, so it needs permission there. `export` and `import` resolve a relative path against the folder the command is run in; `backup` passes `<folder>` to the server as written, so give it an absolute path. How to restore a backup, and the export file format, are on the [Operations](/admin/operations) page. Which settings apply at once and which wait for the next start is on the [Settings](/admin/settings) page.

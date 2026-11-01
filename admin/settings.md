@@ -1,6 +1,6 @@
 # Settings
 
-DADABADA reads its settings from `<data folder>/dadabada.toml`, which [`dadabada init`](/admin/command-line#dadabada-init) writes with every setting in it. This page lists every setting, when a change takes effect, and the fixed rules and limits that are not settings.
+DADABADA reads its settings from `<data folder>/dadabada.toml`, which [`ddbd init`](/admin/command-line#ddbd-init) writes with every setting in it. This page lists every setting, when a change takes effect, and the fixed rules and limits that are not settings.
 
 ```toml
 # <data folder>/dadabada.toml (the first lines)
@@ -30,7 +30,7 @@ session_idle_hours = 24
 | `[rocksdb] block_cache_mb` | `256` | memory in MB for cached data blocks (at least 8) |
 | `[rocksdb] blob_min_kb` | `4` | record bodies of this many KB or more are kept in separate blob files (at least 1) |
 
-Durations (`notify_keep`, `private_key_ttl`, `login_max_delay`) are a number followed by `ms`, `s`, `m`, `h`, `d` or `w`; a bare number is seconds. The four settings with a flag in brackets can also be overridden for one run on the [`start`](/admin/command-line#dadabada-start) command line.
+Durations (`notify_keep`, `private_key_ttl`, `login_max_delay`) are a number followed by `ms`, `s`, `m`, `h`, `d` or `w`; a bare number is seconds. The four settings with a flag in brackets can also be overridden for one run on the [`start`](/admin/command-line#ddbd-start) command line.
 
 The Web Admin's Settings page checks values before it saves them: durations must be above zero, `port`, `login_free_attempts`, `session_idle_hours` and `admin_session_idle_minutes` at least 1, `bind` an IP address, and `tls_cert` and `tls_key` files that exist on the server (an empty value means the files made by `init`). Turning `tls` on when the certificate file is missing makes a new self-signed certificate in `<data folder>/tls/`.
 
@@ -62,13 +62,13 @@ Every way to change a setting, and when it applies:
 | way | what it changes | when it applies |
 |---|---|---|
 | edit `<data folder>/dadabada.toml`, then restart (stop + `start`) | every setting | on the next start |
-| `dadabada start --notify-keep <duration> --private-key-ttl <duration> --max-indexes <number> --max-tags <number>` | those four, for this run only (the file is not changed) | now, until the next start without them |
+| `ddbd start --notify-keep <duration> --private-key-ttl <duration> --max-indexes <number> --max-tags <number>` | those four, for this run only (the file is not changed) | now, until the next start without them |
 | Web Admin, Settings page | every setting; saved to `dadabada.toml` | the left column above at once; the right column on the next start, and the page says which are waiting |
-| `dadabada admin --data <folder> settings` | (shows) every setting in force, and marks each one whose saved value differs | |
-| `dadabada admin --data <folder> user ...`, `web-password`, `secret rotate` | users and levels, the web admin password, the private-key secret | at once |
+| `ddbd admin --data <folder> settings` | (shows) every setting in force, and marks each one whose saved value differs | |
+| `ddbd admin --data <folder> user ...`, `web-password`, `secret rotate` | users and levels, the web admin password, the private-key secret | at once |
 
 ::: tip
-`dadabada admin --data <folder> settings` is the way to check: it prints what the running server uses, and marks any setting whose saved value differs with `(saved <value>, applies on next start)`.
+`ddbd admin --data <folder> settings` is the way to check: it prints what the running server uses, and marks any setting whose saved value differs with `(saved <value>, applies on next start)`.
 :::
 
 ::: info Saving replaces command-line overrides

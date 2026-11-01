@@ -1,35 +1,35 @@
 # Command Line
 
-DADABADA is one program, `dadabada`. Install it with `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh` (see [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing)). This page lists its subcommands and their options:
+DADABADA is one program, `ddbd`. Install it with `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh` (see [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing)). This page lists its subcommands and their options:
 
 ```
-dadabada <command> [<options>]
+ddbd <command> [<options>]
 ```
 
 | command | what it does |
 |---|---|
-| [`init`](#dadabada-init) | makes a data folder: settings, an empty database and a TLS certificate. Once per database |
-| [`start`](#dadabada-start) | runs the server in the terminal. Every time |
-| [`stop`](#dadabada-stop) | stops the running server cleanly. Only for the OS user who runs the server |
-| [`restart`](#dadabada-restart) | stops the running server, then starts it again in this terminal |
-| [`admin`](#dadabada-admin) | runs an admin command or opens the [Admin Shell](/admin/admin-shell). Only for the OS user who runs the server |
-| [`connect`](#dadabada-connect) | opens the [User Shell](/admin/user-shell) against a running server, as a user |
-| [`debug`](#dadabada-debug) | shows how values are encoded and sorted. Needs no server |
-| [`version`](#dadabada-version) | prints the version |
+| [`init`](#ddbd-init) | makes a data folder: settings, an empty database and a TLS certificate. Once per database |
+| [`start`](#ddbd-start) | runs the server in the terminal. Every time |
+| [`stop`](#ddbd-stop) | stops the running server cleanly. Only for the OS user who runs the server |
+| [`restart`](#ddbd-restart) | stops the running server, then starts it again in this terminal |
+| [`admin`](#ddbd-admin) | runs an admin command or opens the [Admin Shell](/admin/admin-shell). Only for the OS user who runs the server |
+| [`connect`](#ddbd-connect) | opens the [User Shell](/admin/user-shell) against a running server, as a user |
+| [`debug`](#ddbd-debug) | shows how values are encoded and sorted. Needs no server |
+| [`version`](#ddbd-version) | prints the version |
 
-Options can be written with a space or with `=`: `--data /srv/dadabada` or `--data=/srv/dadabada`. `dadabada --help` (or `dadabada <command> --help`) lists the options; `dadabada --version` prints the version. The quick start is two commands:
+Options can be written with a space or with `=`: `--data /srv/dadabada` or `--data=/srv/dadabada`. `ddbd --help` (or `ddbd <command> --help`) lists the options; `ddbd --version` prints the version. The quick start is two commands:
 
 ```bash
-$ dadabada init --port 7070 --data /srv/dadabada
-$ dadabada start --data /srv/dadabada
+$ ddbd init --port 7070 --data /srv/dadabada
+$ ddbd start --data /srv/dadabada
 ```
 
-## `dadabada init`
+## `ddbd init`
 
 Makes a data folder with settings and a database, and with `--tls` a TLS certificate.
 
 ```
-dadabada init [--port <port>] [--bind <address>] [--data <folder>] [--tls]
+ddbd init [--port <port>] [--bind <address>] [--data <folder>] [--tls]
 ```
 
 | option | type | default | meaning |
@@ -53,12 +53,12 @@ With `--tls`, the certificate is made for the names `localhost`, `127.0.0.1` and
 `--port`, `--bind` and `--tls` only set the first values. To change them later, edit `dadabada.toml` or use the Web Admin's Settings page, and restart. See [Operations](/admin/operations#changing-the-configuration).
 :::
 
-## `dadabada start`
+## `ddbd start`
 
 Runs the server in the terminal.
 
 ```
-dadabada start [--data <folder>] [--notify-keep <duration>] [--private-key-ttl <duration>] [--max-indexes <number>] [--max-tags <number>]
+ddbd start [--data <folder>] [--notify-keep <duration>] [--private-key-ttl <duration>] [--max-indexes <number>] [--max-tags <number>]
 ```
 
 | option | type | default | meaning |
@@ -88,25 +88,25 @@ If the loose-match rules of this build differ from the ones stored in the databa
 
 `init` is done **once** per data folder; `start` is done **every time** the server runs.
 
-| | `dadabada init` | `dadabada start` |
+| | `ddbd init` | `ddbd start` |
 |---|---|---|
 | when | once, when you set up a new database | every time you run the server (after a reboot, from systemd, after changing settings) |
 | what it does | creates the data folder (mode 0700), writes `dadabada.toml` with your port, address and TLS choice, makes the TLS certificate and key, creates the empty database and its server secret, prints the certificate fingerprint | reads `dadabada.toml`, opens the existing database, listens on the port and the admin socket, runs until stopped |
-| on an existing folder | refuses (`<folder> is already set up. Start it with: dadabada start --data <folder>`) | runs it |
-| on a missing folder | creates it | refuses (``Could not read <folder>/dadabada.toml: ... Run `dadabada init --data <folder>` first.``) |
+| on an existing folder | refuses (`<folder> is already set up. Start it with: ddbd start --data <folder>`) | runs it |
+| on a missing folder | creates it | refuses (``Could not read <folder>/dadabada.toml: ... Run `ddbd init --data <folder>` first.``) |
 | changes anything on disk | yes, it creates everything | `start` itself writes no settings and no certificate; it writes the database and the admin socket while running |
 
 Why two steps instead of one command that does both:
 
 - **Setup must never repeat by accident.** If starting also set up, a restart could make a new certificate, and every client that pinned the old fingerprint would refuse to connect; or it could rewrite the settings you edited.
 - **A mistyped folder fails loudly.** `start --data /srv/dadabdaa` (typo) stops with an error. If `start` created missing folders, it would quietly start a new, empty database, and users would think their data was gone.
-- **Choices made once are kept.** Port, address and TLS are chosen at `init` and saved; `start` needs no options, so a service manager only ever runs `dadabada start --data <folder>`.
+- **Choices made once are kept.** Port, address and TLS are chosen at `init` and saved; `start` needs no options, so a service manager only ever runs `ddbd start --data <folder>`.
 - **One process per database.** `start` refuses if the database is already open in another DADABADA process, so two servers can never write the same files.
 
-## `dadabada stop`
+## `ddbd stop`
 
 ```
-dadabada stop [--data <folder>]
+ddbd stop [--data <folder>]
 ```
 
 Stops the running server cleanly, the same way as Ctrl-C: it refuses new requests, finishes the ones in progress, closes the database and removes `admin.sock`. Queued background work stays in the outbox and continues at the next start, so a stop takes about a second. The command asks the server over the admin socket, so only the operating system user who runs the server can use it, and it works however the server was started (in a terminal, in the background or as a service). It waits until the server process has ended:
@@ -124,20 +124,20 @@ When no server is running for that folder, it says so and exits with status 1: `
 
 For a server that runs as a systemd service, use `systemctl stop dadabada` instead, so systemd knows it was stopped on purpose.
 
-## `dadabada restart`
+## `ddbd restart`
 
 ```
-dadabada restart [--data <folder>] [<start options>]
+ddbd restart [--data <folder>] [<start options>]
 ```
 
-Stops the running server (as `dadabada stop` does), then starts it again **in this terminal**, in the foreground, with the options given here. It takes the same options as [`dadabada start`](#dadabada-start). If no server is running for the folder, it says so and starts one.
+Stops the running server (as `ddbd stop` does), then starts it again **in this terminal**, in the foreground, with the options given here. It takes the same options as [`ddbd start`](#ddbd-start). If no server is running for the folder, it says so and starts one.
 
 A server that was running in the background or in another terminal ends up running in the terminal where `restart` was typed. To restart a server where it already runs (its terminal, its log file, its process id), use **Restart** on the Tools page of the [Web Admin](/admin/web-admin). For a systemd service, use `systemctl restart dadabada`.
 
-## `dadabada admin`
+## `ddbd admin`
 
 ```
-dadabada admin [--data <folder>] [<command> ...]
+ddbd admin [--data <folder>] [<command> ...]
 ```
 
 With a command, runs it and exits. Without one, opens the [Admin Shell](/admin/admin-shell). It talks to the running server over the admin socket in the data folder, so it works only while the server runs, and only for the operating system user who started it. When the server is not running it stops with `Could not reach DADABADA at <folder>/admin.sock (...). Is it running?`. Put `--data` before the command: every word after the command name belongs to the command.
@@ -147,21 +147,21 @@ With a command, runs it and exits. Without one, opens the [Admin Shell](/admin/a
 | `--data` | folder | `./dadabada-data` (or env `DADABADA_DATA`) | data folder of the running server |
 
 ```bash
-$ dadabada admin --data /srv/dadabada user add alice --level 10
-$ dadabada admin --data /srv/dadabada status
-$ dadabada admin --data /srv/dadabada
+$ ddbd admin --data /srv/dadabada user add alice --level 10
+$ ddbd admin --data /srv/dadabada status
+$ ddbd admin --data /srv/dadabada
 ```
 
 The last one opens the shell, which waits at its own prompt:
 
 ```
-dadabada admin>
+ddbd admin>
 ```
 
-## `dadabada connect`
+## `ddbd connect`
 
 ```
-dadabada connect <server address>[:<port>] [<options>] [<command> ...]
+ddbd connect <server address>[:<port>] [<options>] [<command> ...]
 ```
 
 Opens the [User Shell](/admin/user-shell), or runs one command and exits (signing out afterwards). Put `connect`'s own options before the command: every word after the command name belongs to the command.
@@ -176,7 +176,7 @@ Opens the [User Shell](/admin/user-shell), or runs one command and exits (signin
 | `--trust` | switch | off | on the first connection to an address, trust its certificate without asking (and remember it) |
 
 ```bash
-$ dadabada connect 127.0.0.1:7070 --user alice
+$ ddbd connect 127.0.0.1:7070 --user alice
 ```
 
 Then, at the shell's prompt:
@@ -188,7 +188,7 @@ alice> get products --index "price >= 1000"
 
 With `--tls`, on the first connection to an address the shell shows the certificate fingerprint and asks `Certificate fingerprint SHA256 ... - trust it? (yes/no)`; only `yes` continues. Trusted fingerprints are kept in `$XDG_CONFIG_HOME/dadabada/known_hosts` (normally `~/.config/dadabada/known_hosts`), one `<server address>:<port> <fingerprint>` per line. If a server's certificate later changes, the connection is refused (`the server certificate changed (expected ..., got ...)`), and `--trust` does not override it; delete that line to trust the new certificate.
 
-## `dadabada debug`
+## `ddbd debug`
 
 Shows how values are encoded. It does not need a server.
 
@@ -201,8 +201,8 @@ Shows how values are encoded. It does not need a server.
 | `debug reverse <text>` | the name reversed per `.` segment, and the text reversed |
 | `debug id <user id>` | a sample record id and the time it carries |
 
-Values are numbers if they read as numbers (negative ones too: `dadabada debug sort -1.5 2`), `true`/`false` as booleans, otherwise strings.
+Values are numbers if they read as numbers (negative ones too: `ddbd debug sort -1.5 2`), `true`/`false` as booleans, otherwise strings.
 
-## `dadabada version`
+## `ddbd version`
 
-Prints `dadabada` and the version.
+Prints `ddbd` and the version.

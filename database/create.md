@@ -111,7 +111,7 @@ This is the full record shape. The other responses on this page leave out fields
 | `data` | the data you sent (object keys come back in alphabetical order) |
 
 ::: tip
-With the self-signed certificate made by `dadabada init`, pin the certificate in your client, or add `-k` to `curl` for a quick test (see [Trusting the certificate](/api-reference/connection#trusting-the-certificate)). Only `login` works without a token.
+With the self-signed certificate made by `ddbd init`, pin the certificate in your client, or add `-k` to `curl` for a quick test (see [Trusting the certificate](/api-reference/connection#trusting-the-certificate)). Only `login` works without a token.
 :::
 
 ## Data

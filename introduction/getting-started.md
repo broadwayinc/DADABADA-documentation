@@ -18,16 +18,16 @@ DADABADA runs on Linux, on x86_64 or arm64 processors, with glibc 2.34 or newer:
 $ curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh
 ```
 
-The installer downloads DADABADA, checks the download, and puts the `dadabada` program in `/usr/local/bin`, so you can run it from any folder. Writing there needs administrator rights, so it may ask for your password once. Without sudo, it installs into `~/.local/bin` instead and tells you how to add that folder to your `PATH`. The license files go next to it, in `/usr/local/share/doc/dadabada`.
+The installer downloads DADABADA, checks the download, and puts the `ddbd` program in `/usr/local/bin`, so you can run it from any folder. Writing there needs administrator rights, so it may ask for your password once. Without sudo, it installs into `~/.local/bin` instead and tells you how to add that folder to your `PATH`. The license files go next to it, in `/usr/local/share/doc/dadabada`.
 
 Check that it worked:
 
 ```bash
-$ dadabada version
+$ ddbd version
 ```
 
 ```
-dadabada 0.1.3
+ddbd 0.1.4
 ```
 
 Running the same install command again later updates DADABADA to the newest version. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
@@ -37,7 +37,7 @@ Running the same install command again later updates DADABADA to the newest vers
 A data folder holds one database: its records, users, settings and certificate. Create it once:
 
 ```bash
-$ dadabada init --data ~/dadabada-data
+$ ddbd init --data ~/dadabada-data
 ```
 
 ```
@@ -45,14 +45,14 @@ Created data folder /home/ubuntu/dadabada-data (owner: ubuntu, mode 0700)
 Saved settings to /home/ubuntu/dadabada-data/dadabada.toml
 TLS is off: DADABADA speaks plain HTTP, so passwords and data travel unencrypted.
 Run it behind HTTPS (a load balancer or proxy that serves HTTPS), or set it up with --tls.
-Next: dadabada start --data /home/ubuntu/dadabada-data
-Then add a user: dadabada admin --data /home/ubuntu/dadabada-data user add <name> --level 00
+Next: ddbd start --data /home/ubuntu/dadabada-data
+Then add a user: ddbd admin --data /home/ubuntu/dadabada-data user add <name> --level 00
 ```
 
 `init` creates the folder if it does not exist, including any missing parent folders, and makes it readable only by you. Pick any folder you can write to. If the folder is already set up, `init` changes nothing and says so:
 
 ```
-/home/ubuntu/dadabada-data is already set up. Start it with: dadabada start --data /home/ubuntu/dadabada-data
+/home/ubuntu/dadabada-data is already set up. Start it with: ddbd start --data /home/ubuntu/dadabada-data
 ```
 
 The options of `init`:
@@ -74,7 +74,7 @@ By default DADABADA speaks plain HTTP: passwords, tokens and records travel unen
 - **DADABADA serves HTTPS itself.** Add `--tls` when you create the folder:
 
 ```bash
-$ dadabada init --data ~/dadabada-data --tls
+$ ddbd init --data ~/dadabada-data --tls
 ```
 
 `--tls` makes a self-signed certificate. Browsers warn about it, and curl needs `-k`, until you replace it with a certificate from a certificate authority (Settings page, `tls_cert` and `tls_key`).
@@ -84,27 +84,27 @@ With TLS off, `https://` requests to the port fail; with TLS on, plain `http://`
 ## 3. Start the server
 
 ```bash
-$ dadabada start --data ~/dadabada-data
+$ ddbd start --data ~/dadabada-data
 ```
 
 ```
-DADABADA 0.1.3  (schemaless, lexicographic, single binary)
+DADABADA 0.1.4  (schemaless, lexicographic, single binary)
   data     /home/ubuntu/dadabada-data
   network  0.0.0.0:7070 (plain HTTP)
   admin    /home/ubuntu/dadabada-data/admin.sock (only OS user ubuntu)
   limits   indexes per record: unlimited · tags per record: unlimited · notifications kept 1d · private keys last 1h
   users 0 · records 0 · collections 0
-19:49:12  Ready. DADABADA 0.1.3 on 0.0.0.0:7070 (plain HTTP)
+19:49:12  Ready. DADABADA 0.1.4 on 0.0.0.0:7070 (plain HTTP)
 ```
 
-The server runs in this terminal and prints a line for every request. Leave it running and open a **second terminal** for the next steps. To stop it, press Ctrl-C here, or run `dadabada stop --data ~/dadabada-data` from another terminal.
+The server runs in this terminal and prints a line for every request. Leave it running and open a **second terminal** for the next steps. To stop it, press Ctrl-C here, or run `ddbd stop --data ~/dadabada-data` from another terminal.
 
 ## 4. Open the web admin
 
 The web admin is a page served by DADABADA itself, for you as the administrator. Turn it on by giving it a password, in the second terminal:
 
 ```bash
-$ dadabada admin --data ~/dadabada-data web-password
+$ ddbd admin --data ~/dadabada-data web-password
 ```
 
 ```
@@ -168,14 +168,14 @@ print(json.load(urllib.request.urlopen(req)))
 
 
 ```text [User shell]
-$ dadabada connect localhost:7070 --user alice
+$ ddbd connect localhost:7070 --user alice
 Password: correct-horse
 Signed in as alice (level 10).
 ```
 
 :::
 
-The **User shell** tab signs in to the user shell, a terminal client built into `dadabada`: it asks for the password (shown as you type), then waits at the `alice>` prompt. Keep it open; in the next steps you type the shell's commands at that prompt, and it sends the token for you. See [User shell](/admin/user-shell) for every command.
+The **User shell** tab signs in to the user shell, a terminal client built into `ddbd`: it asks for the password (shown as you type), then waits at the `alice>` prompt. Keep it open; in the next steps you type the shell's commands at that prompt, and it sends the token for you. See [User shell](/admin/user-shell) for every command.
 
 To run the JavaScript tab, save it as a file ending in `.mjs` (for example `login.mjs`) and run `node login.mjs`; it needs Node.js 18 or newer. To run the Python tab, save it as `login.py` and run `python3 login.py`. Neither needs anything installed beyond Node.js or Python.
 
@@ -473,7 +473,7 @@ A few other queries to try, as the `-d` body:
 When you are done, stop DADABADA. In the terminal where it runs, press **Ctrl-C**. Or, from any other terminal:
 
 ```bash
-$ dadabada stop --data ~/dadabada-data
+$ ddbd stop --data ~/dadabada-data
 ```
 
 ```
@@ -488,4 +488,4 @@ Stopping: refusing new requests, finishing the ones in progress...
 Stopped.
 ```
 
-Everything you saved stays in `~/dadabada-data`. To continue later, start it again with `dadabada start --data ~/dadabada-data`; alice, her record and the web admin password are all still there.
+Everything you saved stays in `~/dadabada-data`. To continue later, start it again with `ddbd start --data ~/dadabada-data`; alice, her record and the web admin password are all still there.

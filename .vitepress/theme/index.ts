@@ -5,7 +5,7 @@ import './custom.css'
 import Landing from './landing/Landing.vue'
 
 // User shell examples (```text [User shell] blocks) are sessions: `alice> post products ...`,
-// `alice/shop-bot> ...` (signed in with an agent key) or `$ dadabada connect ...`, followed by what
+// `alice/shop-bot> ...` (signed in with an agent key) or `$ ddbd connect ...`, followed by what
 // the program prints. Their copy button copies only the commands, without the prompt and without
 // the output. Every other block copies as VitePress does.
 const PROMPT = /^(\$|[A-Za-z0-9_.@/-]+>) /

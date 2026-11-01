@@ -841,5 +841,5 @@ NO_ACCESS: Record VZOat4ixBwfABGAq is read-only; only the admin can change it.
 ```
 
 ::: danger
-`readonly: true` cannot be undone by the uploader. After it is set, only `dadabada admin` or the web admin can change or delete the record.
+`readonly: true` cannot be undone by the uploader. After it is set, only `ddbd admin` or the web admin can change or delete the record.
 :::

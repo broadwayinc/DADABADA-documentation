@@ -9,7 +9,7 @@ It is for the admin only. Apps, scripts and AI agents never use it: they sign in
 The Web Admin is off until it has a password. On the server, as the operating system user who runs DADABADA, set one with the [Admin Shell](/admin/admin-shell):
 
 ```bash
-$ dadabada admin --data ~/dadabada-data web-password
+$ ddbd admin --data ~/dadabada-data web-password
 ```
 
 ```
