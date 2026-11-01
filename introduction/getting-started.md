@@ -27,7 +27,7 @@ $ ddbd version
 ```
 
 ```
-ddbd 0.1.4
+ddbd x.x.x
 ```
 
 Running the same install command again later updates DADABADA to the newest version. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).

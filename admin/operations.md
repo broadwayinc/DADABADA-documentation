@@ -26,7 +26,7 @@ Two settings change what it does. Put them before `sh`:
 | `DADABADA_VERSION` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_VERSION=0.1.0 sh` | installs that version instead of the newest |
 | `DADABADA_INSTALL_DIR` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_INSTALL_DIR=/opt/dadabada/bin sh` | installs the program into that folder; the license files go to `/opt/dadabada/share/doc/dadabada` |
 
-Check the installed version with `ddbd version`, which prints `ddbd 0.1.4`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
+Check the installed version with `ddbd version`, which prints `ddbd x.x.x`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
 
 ### Upgrading
 
