@@ -21,20 +21,20 @@ const access = [
   { t: 'Rules for references', link: '/database/referencing.html', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
 ]
 
-// 00 · The problem: what DADABADA set out to solve, and how
+// 00 · The problem: three problems with databases today, each with how DADABADA fixes it
 const problems = [
   {
-    t: 'Serverless, for real',
+    t: 'Serverless apps',
     p: 'Every app needs a server of its own in front of the database, so no app is truly serverless.',
     a: 'DADABADA checks the access rules of every record itself. Browsers, serverless functions and agents call it directly over HTTP, each with its own sign-in.',
   },
   {
-    t: 'Safer AI agents',
+    t: 'AI agents',
     p: 'Give an agent the database password and it can read and change everything that password can.',
     a: 'Each agent gets its own key: capped at an access level, limited to some collections, read-only if you want, set to expire, and revocable at any time. What it saves names the key that saved it.',
   },
   {
-    t: 'Scale at low cost',
+    t: 'Growing data',
     p: 'Queries that filter and sort as they read get slower, and pricier to host, as the data grows.',
     a: 'DADABADA writes each record\u2019s keys when it is saved, so a query reads one ready range and its cost follows the page it returns, not the size of the data. One binary, no other service to run.',
   },
@@ -93,13 +93,14 @@ const steps = [
         <p class="num">00 · The problem</p>
         <div class="split problem">
           <div>
-            <h2>Apps and agents need a backend just to reach their data</h2>
-            <p>A database trusts whoever holds its password. So between it and every app sits a server of your
-              own that keeps the password and decides who may read what. That server is code to write, host,
-              secure and pay for, and it is what keeps an app from being fully serverless.</p>
-            <p>Hand an AI agent the password instead, and it holds the keys to everything. DADABADA was built to
-              remove that middle layer without giving anything up: safe for agents, and cheap to run as the data
-              grows.</p>
+            <h2>We need a better database</h2>
+            <p>The trouble with databases today: a database trusts whoever holds its password. So every app needs
+              a server of its own in front of it, to keep the password and decide who may read what. That server is
+              code to write, host, secure and pay for, and it is why an app on a database is never fully
+              serverless.</p>
+            <p>Give an AI agent the password instead, and it holds the keys to everything. And as the data grows,
+              queries that filter and sort as they read get slower and cost more to run.</p>
+            <p>DADABADA was built to fix these three problems.</p>
           </div>
           <figure class="fig">
             <ProblemDiagram />
@@ -108,7 +109,9 @@ const steps = [
         <div class="cards grid3">
           <div v-for="c in problems" :key="c.t" class="card flat prob">
             <h3>{{ c.t }}</h3>
+            <p class="prob-lbl">The problem</p>
             <p class="prob-p">{{ c.p }}</p>
+            <p class="prob-lbl">How DADABADA fixes it</p>
             <p>{{ c.a }}</p>
           </div>
         </div>
@@ -121,7 +124,7 @@ const steps = [
         <p class="num">01 · Storage</p>
         <div class="split storage">
           <div>
-            <h2>Save JSON. Query it at once.</h2>
+            <h2>JSON store, flexible queries</h2>
             <p>There is no schema and no index to set up. With each record, the user who saves it names its collection,
               access level, tags and indexes. DADABADA turns those into sorted keys and writes them together with the
               record in one atomic step.</p>
@@ -478,8 +481,9 @@ a.card { border-top: 3px solid var(--dd-ink); }
 @media (hover: hover) and (pointer: fine) { a.card:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px var(--dd-shadow); } }
 .card p { font-size: 14px; line-height: 1.65; color: var(--dd-muted); margin: 0; }
 .card.flat { box-shadow: none; }
-/* 00 · The problem: each card names the problem (italic, above a divider), then the answer */
-.card.prob .prob-p { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--dd-line); font-style: italic; }
+/* 00 · The problem: each card names the problem (italic, above a divider), then how DADABADA fixes it */
+.card.prob .prob-p { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--dd-line); font-style: italic; }
+.card.prob .prob-lbl { font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dd-muted); margin: 0 0 6px; }
 
 /* install */
 .steps { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 28px; counter-reset: none; }
