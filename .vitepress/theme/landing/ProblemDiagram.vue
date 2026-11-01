@@ -2,10 +2,11 @@
 import { ref } from 'vue'
 import { useVisible } from './visible'
 
-// The problem in one picture. Usually an app or an agent cannot reach the database itself: a backend holds
-// the database password and checks every rule, and someone has to build, host and secure it. With DADABADA
-// each record carries its rules, so browsers, functions and agents call it directly, each with its own
-// sign-in. A request dot travels each path: held up in the backend above, straight through below.
+// The problem in one picture. Usually access to data is decided outside the database: a server in the middle
+// checks every request against rules someone wrote, and someone has to build, host and scale it. With
+// DADABADA's writer-based access control (WBAC), the writer of each record sets who may read it and the
+// database enforces it, so browsers, functions and agents call it directly, each with its own sign-in. A
+// request dot travels each path: held up in the server above, straight through below.
 const root = ref<SVGElement | null>(null)
 const playing = useVisible(root)
 const CLIENTS = [
@@ -18,11 +19,11 @@ const CLIENTS = [
 <template>
   <svg ref="root" class="prob-dia" :class="{ playing }" viewBox="0 0 520 340" role="img"
     aria-labelledby="prob-dia-title prob-dia-desc">
-    <title id="prob-dia-title">Without a backend in between</title>
-    <desc id="prob-dia-desc">Usually, an app or an AI agent reaches the database through a backend that holds the
-      database password and checks every access rule, which someone has to build, host and secure. With DADABADA,
-      a browser, a serverless function and an AI agent each call DADABADA directly with their own sign-in, and
-      DADABADA checks the rules of every record itself.</desc>
+    <title id="prob-dia-title">Without a server in the middle</title>
+    <desc id="prob-dia-desc">Usually, an app or an AI agent reaches its data through a server in the middle that checks
+      every request against rules someone wrote, and which someone has to build, host and scale. With DADABADA's
+      writer-based access control, the writer of each record sets who may read it, and DADABADA enforces it on every
+      request, so a browser, a serverless function and an AI agent each call it directly with their own sign-in.</desc>
 
     <!-- usually -->
     <text class="lbl" x="20" y="22">USUALLY</text>
@@ -32,16 +33,16 @@ const CLIENTS = [
 
     <line class="wire" x1="130" y1="70" x2="174" y2="70" />
     <rect class="box mid" x="174" y="32" width="174" height="76" />
-    <text class="strong" x="186" y="54">your backend</text>
-    <text class="muted" x="186" y="74">holds the DB password</text>
-    <text class="muted" x="186" y="92">checks every rule</text>
-    <text class="note" x="174" y="126">you build, host and secure it</text>
+    <text class="strong" x="186" y="54">server in the middle</text>
+    <text class="muted" x="186" y="74">checks every request</text>
+    <text class="muted" x="186" y="92">against your rules</text>
+    <text class="note" x="174" y="126">you build, host and scale it</text>
 
     <line class="wire" x1="348" y1="70" x2="392" y2="70" />
     <rect class="box" x="392" y="38" width="108" height="64" />
     <text class="strong" x="404" y="62">database</text>
     <text class="muted" x="404" y="80">trusts the</text>
-    <text class="muted" x="404" y="94">password</text>
+    <text class="muted" x="404" y="94">server</text>
 
     <circle class="dot dot-top" cx="130" cy="70" r="5" />
 
@@ -56,12 +57,13 @@ const CLIENTS = [
       <line class="wire" x1="130" :y1="213 + i * 46" x2="300" :y2="213 + i * 46" />
       <circle class="dot" :class="`dot-b${i}`" cx="130" :cy="213 + i * 46" r="5" />
     </g>
-    <text class="note" x="146" y="186">no backend in between</text>
+    <text class="note" x="146" y="186">nothing in the middle</text>
     <rect class="box dd" x="300" y="194" width="200" height="130" />
     <text class="strong big" x="314" y="220">DADABADA</text>
-    <text class="muted" x="314" y="246">rules on every record,</text>
-    <text class="muted" x="314" y="264">checked on every read</text>
-    <text class="muted" x="314" y="282">and every write</text>
+    <text class="muted" x="314" y="244">WBAC: the writer of</text>
+    <text class="muted" x="314" y="262">each record sets who</text>
+    <text class="muted" x="314" y="280">may read it, checked</text>
+    <text class="muted" x="314" y="298">on every request</text>
     <rect class="flash" x="300" y="194" width="200" height="130" />
   </svg>
 </template>

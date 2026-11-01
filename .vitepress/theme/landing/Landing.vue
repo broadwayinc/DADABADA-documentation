@@ -21,22 +21,23 @@ const access = [
   { t: 'Rules for references', link: '/database/referencing.html', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
 ]
 
-// 00 · The problem: three problems with databases today, each with how DADABADA fixes it
+// 00 · The problem: access control needs a server in the middle. Three pain points it causes, each with how
+// writer-based access control (WBAC) fixes it.
 const problems = [
   {
     t: 'Serverless apps',
-    p: 'Every app needs a server of its own in front of the database, so no app is truly serverless.',
-    a: 'DADABADA checks the access rules of every record itself. Browsers, serverless functions and agents call it directly over HTTP, each with its own sign-in.',
+    p: 'Access rules live in a server of your own between the app and its data, so the app is never truly serverless.',
+    a: 'With WBAC the database enforces each record\u2019s rules itself. Browsers, serverless functions and agents call it directly over HTTP, each with its own sign-in.',
   },
   {
     t: 'AI agents',
-    p: 'Give an agent the database password and it can read and change everything that password can.',
+    p: 'An agent works through the same middle server and its broad rules, or holds credentials that open far more than its task needs.',
     a: 'Each agent gets its own key: capped at an access level, limited to some collections, read-only if you want, set to expire, and revocable at any time. What it saves names the key that saved it.',
   },
   {
-    t: 'Growing data',
-    p: 'Queries that filter and sort as they read get slower, and pricier to host, as the data grows.',
-    a: 'DADABADA writes each record\u2019s keys when it is saved, so a query reads one ready range and its cost follows the page it returns, not the size of the data. One binary, no other service to run.',
+    t: 'Cost at scale',
+    p: 'The middle server is one more service to build, host and scale, and every request has to pass through it.',
+    a: 'There is nothing in the middle to run: clients talk to one binary. Each record\u2019s access level and keys are written with it, so a query reads one ready range whose cost follows the page it returns.',
   },
 ]
 
@@ -93,14 +94,15 @@ const steps = [
         <p class="num">00 · The problem</p>
         <div class="split problem">
           <div>
-            <h2>We need a better database</h2>
-            <p>The trouble with databases today: a database trusts whoever holds its password. So every app needs
-              a server of its own in front of it, to keep the password and decide who may read what. That server is
-              code to write, host, secure and pay for, and it is why an app on a database is never fully
-              serverless.</p>
-            <p>Give an AI agent the password instead, and it holds the keys to everything. And as the data grows,
-              queries that filter and sort as they read get slower and cost more to run.</p>
-            <p>DADABADA was built to fix these three problems.</p>
+            <h2>Today, data access needs a server in the&nbsp;middle</h2>
+            <p>Who may read or change a record is decided outside the database: a server sits between the
+              client and the data and checks every request against rules someone wrote. Every app needs one, and
+              every new kind of data means new rules on it.</p>
+            <p>That middle layer is the problem. It keeps apps from being truly serverless, it is where AI agents
+              end up with more access than their task needs, and it is one more service to build, run and scale.</p>
+            <p>DADABADA removes it with <span class="nw">writer-based</span> access control&nbsp;(WBAC): the client that writes a record decides
+              who can read it, and the database enforces that on every request. Clients get full control of their
+              data, with nothing in between.</p>
           </div>
           <figure class="fig">
             <ProblemDiagram />
@@ -111,7 +113,7 @@ const steps = [
             <h3>{{ c.t }}</h3>
             <p class="prob-lbl">The problem</p>
             <p class="prob-p">{{ c.p }}</p>
-            <p class="prob-lbl">How DADABADA fixes it</p>
+            <p class="prob-lbl">How WBAC fixes it</p>
             <p>{{ c.a }}</p>
           </div>
         </div>
