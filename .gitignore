@@ -1,0 +1,12 @@
+# Dependencies, and what `npm run build` / `npm run dev` make
+node_modules/
+.vitepress/dist/
+.vitepress/cache/
+
+# Editors and operating systems
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db

@@ -1,0 +1,210 @@
+/* Dadabada docs: the brand in monotone. Ink #111 on paper, JetBrains Mono, square corners,
+   hard 2px offset shadows. VitePress's brand colour becomes ink (near-white in dark mode). */
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --vp-font-family-base: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --vp-font-family-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --dd-ink: #111111;
+  --dd-paper: #ffffff;
+  --dd-muted: #5e5e5e;
+  --dd-line: #d9d9d9;
+  --dd-soft: #f1f1f1;
+  --dd-shadow: rgba(17, 17, 17, 0.14);
+
+  /* brand = ink */
+  --vp-c-brand-1: var(--dd-ink);
+  --vp-c-brand-2: #333333;
+  --vp-c-brand-3: var(--dd-ink);
+  --vp-c-brand-soft: rgba(17, 17, 17, 0.08);
+  --vp-c-text-1: var(--dd-ink);
+  --vp-c-text-2: var(--dd-muted);
+  --vp-c-text-3: #8a8a8a;
+  --vp-c-bg: var(--dd-paper);
+  --vp-c-bg-alt: #fafafa;
+  --vp-c-bg-soft: var(--dd-soft);
+  --vp-c-bg-elv: var(--dd-paper);
+  --vp-c-divider: var(--dd-line);
+  --vp-c-border: #bdbdbd;
+  --vp-c-gutter: var(--dd-line);
+
+  /* the hero title: ink, no gradient */
+  --vp-home-hero-name-color: var(--dd-ink);
+  --vp-home-hero-name-background: none;
+
+  /* buttons: ink box, paper text */
+  --vp-button-brand-bg: var(--dd-ink);
+  --vp-button-brand-border: var(--dd-ink);
+  --vp-button-brand-text: var(--dd-paper);
+  --vp-button-brand-hover-bg: var(--dd-ink);
+  --vp-button-brand-hover-border: var(--dd-ink);
+  --vp-button-brand-hover-text: var(--dd-paper);
+  --vp-button-brand-active-bg: var(--dd-ink);
+  --vp-button-brand-active-border: var(--dd-ink);
+  --vp-button-brand-active-text: var(--dd-paper);
+  --vp-button-alt-bg: var(--dd-paper);
+  --vp-button-alt-border: #9a9a9a;
+  --vp-button-alt-text: var(--dd-ink);
+  --vp-button-alt-hover-bg: var(--dd-paper);
+  --vp-button-alt-hover-border: var(--dd-ink);
+  --vp-button-alt-hover-text: var(--dd-ink);
+  --vp-button-alt-active-bg: var(--dd-paper);
+  --vp-button-alt-active-border: var(--dd-ink);
+  --vp-button-alt-active-text: var(--dd-ink);
+
+  /* code: dark surface in both themes */
+  --vp-code-block-bg: #141414;
+  --vp-code-block-color: #eeeeee;
+  --vp-code-color: var(--dd-ink);
+  --vp-code-bg: var(--dd-soft);
+  --vp-code-tab-text-color: #8f8f8f;
+  --vp-code-tab-active-text-color: #eeeeee;
+  --vp-code-tab-bg: #141414;
+  --vp-code-tab-divider: #2a2a2a;
+  --vp-code-tab-hover-text-color: #eeeeee;
+  --vp-code-tab-active-bar-color: #eeeeee;
+  --vp-code-line-highlight-color: rgba(255, 255, 255, 0.08);
+  --vp-code-copy-code-bg: #1f1f1f;
+  --vp-code-copy-code-hover-bg: #2a2a2a;
+  --vp-code-copy-code-border-color: #333333;
+  --vp-code-copy-code-hover-border-color: #555555;
+
+  /* containers: each kind has its own colour so they read at a glance */
+  --vp-custom-block-tip-border: #2e8b57;
+  --vp-custom-block-tip-text: #1d5c39;
+  --vp-custom-block-tip-bg: #edf7f0;
+  --vp-custom-block-info-border: #3b78c4;
+  --vp-custom-block-info-text: #1e4a80;
+  --vp-custom-block-info-bg: #edf3fb;
+  --vp-custom-block-warning-border: #e2a300;
+  --vp-custom-block-warning-text: #5b4700;
+  --vp-custom-block-warning-bg: #fff8e1;
+  --vp-custom-block-danger-border: #c74343;
+  --vp-custom-block-danger-text: #8a2a2a;
+  --vp-custom-block-danger-bg: #fff5f5;
+  --vp-custom-block-details-border: #bdbdbd;
+  --vp-custom-block-details-bg: #fafafa;
+  --vp-custom-block-details-text: var(--dd-ink);
+}
+
+.dark {
+  --dd-ink: #ececec;
+  --dd-paper: #0e0e0e;
+  --dd-muted: #b4b4b4;
+  --dd-line: #474747;
+  --dd-soft: #1c1c1c;
+  --dd-shadow: rgba(236, 236, 236, 0.16);
+  --vp-c-brand-2: #c9c9c9;
+  --vp-c-brand-soft: rgba(236, 236, 236, 0.1);
+  --vp-c-text-3: #8a8a8a;
+  --vp-c-bg-alt: #121212;
+  --vp-c-border: #5a5a5a;
+  --vp-button-alt-border: #8a8a8a;
+  --vp-code-bg: #1c1c1c;
+  --vp-code-block-bg: #000000;
+  --vp-custom-block-tip-border: #4caf7d;
+  --vp-custom-block-tip-text: #9fe0bd;
+  --vp-custom-block-tip-bg: #14281d;
+  --vp-custom-block-info-border: #5b94d8;
+  --vp-custom-block-info-text: #aacdf5;
+  --vp-custom-block-info-bg: #15202e;
+  --vp-custom-block-warning-text: #ffca28;
+  --vp-custom-block-warning-bg: #2d2516;
+  --vp-custom-block-warning-border: #f9a825;
+  --vp-custom-block-danger-text: #ef5350;
+  --vp-custom-block-danger-bg: #2d1616;
+  --vp-custom-block-danger-border: #ef5350;
+  --vp-custom-block-details-bg: #161616;
+  --vp-custom-block-details-border: #5a5a5a;
+}
+
+.custom-block { border-left-width: 4px; }
+.custom-block .custom-block-title { font-weight: 600; }
+
+/* square corners and the hard shadow, the dadabada box language */
+.VPButton, .vp-doc div[class*="language-"], .vp-code-group .tabs, .custom-block, .VPFeature, .vp-doc table, .VPNavBarSearch .DocSearch-Button, .VPLocalSearchBox .search-bar, .vp-doc .tabs {
+  border-radius: 0 !important;
+}
+/* home: the name is the headline; the line under it is quieter; the mark is big */
+.VPHero .name { font-size: clamp(56px, 8vw, 104px); line-height: 1; font-weight: 700; letter-spacing: -0.03em; }
+.VPHero .text { font-size: clamp(22px, 3vw, 34px); line-height: 1.25; font-weight: 500; color: var(--dd-muted); margin-top: 0.4rem; }
+.VPHero .tagline { font-size: 17px; line-height: 1.6; max-width: 36rem; }
+.VPHero .image-container { max-width: 10rem !important; }
+/* .VPHero .image-src { width: 320px !important; height: 320px !important; max-width: none !important; max-height: none !important; } */
+/* @media (max-width: 959px) { .VPHero .image-src { width: 200px !important; height: 200px !important; } } */
+.VPHero .image-bg { display: none; }
+
+/* home on desktop: the hero and the cards sit in the first screen below the nav bar, a little above the
+   middle (the space below gets a larger share); at least 2rem stays above them on short screens.
+   The footer follows after the first screen. */
+@media (min-width: 960px) {
+  .VPContent.is-home { display: flex; flex-direction: column; min-height: 100vh; }
+  .VPContent.is-home::before { content: ""; flex: 1 1 0; min-height: 2rem; }
+  .VPContent.is-home::after { content: ""; flex: 1.3 1 0; }
+  .VPHome { margin-bottom: 0 !important; padding: 0 0 2rem; }
+  .VPHome .VPHero { padding-top: var(--vp-nav-height) !important; padding-bottom: 3.5rem !important; }
+}
+
+/* feature cards: a drawn mark on top, title, copy, and a named link at the foot */
+.VPFeature { border: 1px solid var(--vp-c-border) !important; box-shadow: 3px 3px var(--dd-shadow); background-color: inherit !important; transition: transform 0.12s ease, box-shadow 0.12s ease; }
+@media (hover: hover) and (pointer: fine) { .VPFeature:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px var(--dd-shadow); border-color: var(--vp-c-border); } }
+.VPFeature .box { padding: 28px 26px 26px; }
+.VPFeature .icon { width: 56px; height: 56px; margin-bottom: 18px; background: transparent; border-radius: 0; border: 0; box-shadow: none; }
+.VPFeature .icon img { width: 56px; height: 56px; }
+.VPFeature .title { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; line-height: 1.3; }
+.VPFeature .details { font-size: 0.9rem; line-height: 1.65; color: var(--vp-c-text-2); padding-top: 10px; }
+.VPFeature .link-text { padding-top: 14px; }
+.VPFeature .link-text .link-text-value { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+.VPButton.brand, .VPButton.alt { box-shadow: 2px 2px var(--dd-shadow); transition: transform 0.12s ease, box-shadow 0.12s ease; font-weight: 600; letter-spacing: 0.04em; }
+@media (hover: hover) and (pointer: fine) {
+  .VPButton.brand:hover, .VPButton.alt:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px var(--dd-shadow); }
+}
+.VPButton.brand:active, .VPButton.alt:active { transform: translate(2px, 2px); box-shadow: none; }
+.vp-doc div[class*="language-"] { border: 1px solid #2a2a2a; }
+.vp-doc table { display: table; width: 100%; border: 1px solid var(--vp-c-divider); }
+.vp-doc th { font-size: 0.78em; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: var(--dd-muted); background: var(--vp-c-bg); }
+.vp-doc tr:nth-child(2n) { background: var(--vp-c-bg); }
+.vp-doc tr:hover { background: var(--dd-soft); }
+.vp-doc h1, .vp-doc h2, .vp-doc h3 { font-weight: 600; letter-spacing: -0.01em; }
+.vp-doc h2 { border-top: 1px solid var(--vp-c-divider); }
+.vp-doc a { text-decoration: underline; text-underline-offset: 3px; font-weight: 500; }
+.vp-doc a:hover { text-decoration: underline; }
+.VPSidebarItem.level-0 .text { font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.78em; color: var(--dd-muted); }
+.VPSidebarItem.is-active > .item .text { font-weight: 600; }
+.VPNavBarTitle .title { font-weight: 600; letter-spacing: -0.02em; }
+.VPNavBarTitle .logo { height: 26px; }
+/* the mark: 200px on desktop, 150px on tablets, 112px on phones; below desktop the box is the mark's size */
+.VPHome .VPHero .image-container img { width: 200px; height: 200px; max-width: none; max-height: none; }
+@media (max-width: 959px) {
+  .VPHome .VPHero .image { margin: 0 0 2rem; }
+  .VPHome .VPHero .image-container { width: 150px; height: 150px; }
+  .VPHome .VPHero .image-container img { width: 150px; height: 150px; }
+}
+@media (max-width: 639px) {
+  .VPHome .VPHero .image-container { width: 112px; height: 112px; }
+  .VPHome .VPHero .image-container img { width: 112px; height: 112px; }
+}
+.VPHero .text { font-weight: 500; }
+.VPHero .tagline { color: var(--dd-muted); }
+.VPFooter { border-top: 1px solid var(--vp-c-divider); }
+
+/* screenshots in the docs: a 1px border, so a white screenshot does not melt into the page */
+.vp-doc img { border: 1px solid var(--vp-c-border); }
