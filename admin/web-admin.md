@@ -134,6 +134,7 @@ The server's [settings](/admin/settings). Cards marked **applies now** take effe
 
 Work on the whole database:
 
+- **Version**: the DADABADA version this server runs. **[Check for updates]** asks `https://cdn.broadwayinc.com/get/dadabada/latest` for the newest release and says whether this one is up to date, or which command updates it. The Web Admin contacts that address only when you click, and sends nothing but the request.
 - **Back up**, **Export** and **Import**, to and from folders and files on the server. See [Operations](/admin/operations#backup-and-restore).
 - Delete records by query, delete users in batch, or delete every record. Each asks you to type a word to confirm.
 - Rotate the secret behind private access keys.
