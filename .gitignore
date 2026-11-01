@@ -10,3 +10,7 @@ node_modules/
 *~
 .DS_Store
 Thumbs.db
+
+# Claude Code: worktrees and personal settings
+.claude/worktrees/
+.claude/settings.local.json
