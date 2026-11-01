@@ -26,7 +26,7 @@ Two settings change what it does. Put them before `sh`:
 | `DADABADA_VERSION` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_VERSION=0.1.0 sh` | installs that version instead of the newest |
 | `DADABADA_INSTALL_DIR` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_INSTALL_DIR=/opt/dadabada/bin sh` | installs the program into that folder; the license files go to `/opt/dadabada/share/doc/dadabada` |
 
-Check the installed version with `dadabada version`, which prints `dadabada 0.1.2`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
+Check the installed version with `dadabada version`, which prints `dadabada 0.1.3`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
 
 ### Upgrading
 
@@ -44,14 +44,14 @@ https://cdn.broadwayinc.com/get/dadabada/<version>/dadabada-<version>-linux-<pro
 `<processor>` is `x86_64` or `aarch64`, and the newest `<version>` is the text at `https://cdn.broadwayinc.com/get/dadabada/latest`. For version 0.1.0 on x86_64:
 
 ```bash
-$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.2/dadabada-0.1.2-linux-x86_64.tar.gz
-$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.2/dadabada-0.1.2-linux-x86_64.tar.gz.sha256
-$ sha256sum -c dadabada-0.1.2-linux-x86_64.tar.gz.sha256
-$ tar -xzf dadabada-0.1.2-linux-x86_64.tar.gz
-$ sudo install -m 0755 dadabada-0.1.2-linux-x86_64/dadabada /usr/local/bin/dadabada
+$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.3/dadabada-0.1.3-linux-x86_64.tar.gz
+$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.3/dadabada-0.1.3-linux-x86_64.tar.gz.sha256
+$ sha256sum -c dadabada-0.1.3-linux-x86_64.tar.gz.sha256
+$ tar -xzf dadabada-0.1.3-linux-x86_64.tar.gz
+$ sudo install -m 0755 dadabada-0.1.3-linux-x86_64/dadabada /usr/local/bin/dadabada
 ```
 
-`sha256sum -c` must answer `dadabada-0.1.2-linux-x86_64.tar.gz: OK`; if it does not, the download is damaged, so download it again. The folder also holds `LICENSE`, `NOTICE` and `THIRD-PARTY-NOTICES`.
+`sha256sum -c` must answer `dadabada-0.1.3-linux-x86_64.tar.gz: OK`; if it does not, the download is damaged, so download it again. The folder also holds `LICENSE`, `NOTICE` and `THIRD-PARTY-NOTICES`.
 
 ### Removing
 

@@ -27,7 +27,7 @@ $ dadabada version
 ```
 
 ```
-dadabada 0.1.2
+dadabada 0.1.3
 ```
 
 Running the same install command again later updates DADABADA to the newest version. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
@@ -88,13 +88,13 @@ $ dadabada start --data ~/dadabada-data
 ```
 
 ```
-DADABADA 0.1.2  (schemaless, lexicographic, single binary)
+DADABADA 0.1.3  (schemaless, lexicographic, single binary)
   data     /home/ubuntu/dadabada-data
   network  0.0.0.0:7070 (plain HTTP)
   admin    /home/ubuntu/dadabada-data/admin.sock (only OS user ubuntu)
   limits   indexes per record: unlimited · tags per record: unlimited · notifications kept 1d · private keys last 1h
   users 0 · records 0 · collections 0
-19:49:12  Ready. DADABADA 0.1.2 on 0.0.0.0:7070 (plain HTTP)
+19:49:12  Ready. DADABADA 0.1.3 on 0.0.0.0:7070 (plain HTTP)
 ```
 
 The server runs in this terminal and prints a line for every request. Leave it running and open a **second terminal** for the next steps. To stop it, press Ctrl-C here, or run `dadabada stop --data ~/dadabada-data` from another terminal.
