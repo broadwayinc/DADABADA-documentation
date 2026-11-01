@@ -88,9 +88,9 @@ text { fill: var(--dd-ink); font-size: 12.5px; }
 .dot { fill: var(--dd-ink); }
 
 .salt, .key, .cipher, .stored, .dot, .kdf, .aes {
-  animation-duration: 10s;
+  animation-duration: 7s;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.22, 0.9, 0.3, 1);
   animation-play-state: paused;
 }
 .playing :is(.salt, .key, .cipher, .stored, .dot, .kdf, .aes) { animation-play-state: running; }

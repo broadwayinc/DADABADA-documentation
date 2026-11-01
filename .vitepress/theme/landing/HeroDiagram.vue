@@ -136,54 +136,57 @@ text { fill: var(--dd-ink); font-size: 13px; }
 .chip-on { fill: none; stroke: var(--dd-ink); stroke-width: 3; }
 .ok, .no { fill: none; stroke: var(--dd-ink); stroke-width: 2.2; stroke-linecap: square; }
 
-/* one 12 s timeline, paused while off screen */
+/* one 7.5 s timeline, paused while off screen: quick moves that settle, short holds */
 .token, .ring, .trail, .hl, .bracket, .chip-on, .res, .conn-agent, .conn-carol {
-  animation-duration: 12s;
+  animation-duration: 7.5s;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.22, 0.9, 0.3, 1);
   animation-play-state: paused;
 }
 .playing :is(.token, .ring, .trail, .hl, .bracket, .chip-on, .res, .conn-agent, .conn-carol) { animation-play-state: running; }
 
+/* alice's record lands in the level-05 range */
 .token { animation-name: token; }
 @keyframes token {
-  0%, 3% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
-  6% { transform: translate(var(--tx), var(--ty)); opacity: 1; }
-  22%, 92% { transform: translate(0, 0); opacity: 1; }
+  0%, 2% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+  4% { transform: translate(var(--tx), var(--ty)); opacity: 1; }
+  14%, 92% { transform: translate(0, 0); opacity: 1; }
   100% { transform: translate(0, 0); opacity: 0; }
 }
 .trail { animation-name: trail; }
-@keyframes trail { 0%, 4% { opacity: 0; } 8%, 20% { opacity: 0.6; } 28%, 100% { opacity: 0; } }
-.ring { animation-name: ring; }
-@keyframes ring {
-  0%, 36% { opacity: 0; transform: scale(1); }
-  40% { opacity: 1; transform: scale(1.6); }
-  48%, 100% { opacity: 0; transform: scale(2.6); }
-}
+@keyframes trail { 0%, 3% { opacity: 0; } 6%, 13% { opacity: 0.6; } 18%, 100% { opacity: 0; } }
+/* the agent key's query covers levels 00 to 05 and reads it */
 .hl-agent { animation-name: hl-agent; }
-@keyframes hl-agent { 0%, 27% { opacity: 0; } 33%, 52% { opacity: 0.08; } 58%, 100% { opacity: 0; } }
+@keyframes hl-agent { 0%, 20% { opacity: 0; } 24%, 50% { opacity: 0.08; } 55%, 100% { opacity: 0; } }
 .br-agent, .conn-agent, .on-agent { animation-name: br-agent; }
 @keyframes br-agent {
-  0%, 27% { transform: scaleY(0); opacity: 0; }
-  28% { opacity: 1; }
-  34%, 52% { transform: scaleY(1); opacity: 1; }
-  58%, 100% { transform: scaleY(1); opacity: 0; }
+  0%, 20% { transform: scaleY(0); opacity: 0; }
+  21% { opacity: 1; }
+  25%, 50% { transform: scaleY(1); opacity: 1; }
+  55%, 100% { transform: scaleY(1); opacity: 0; }
 }
 .conn-agent, .on-agent { transform: none !important; }
+.ring { animation-name: ring; }
+@keyframes ring {
+  0%, 27% { opacity: 0; transform: scale(1); }
+  30% { opacity: 1; transform: scale(1.6); }
+  37%, 100% { opacity: 0; transform: scale(2.6); }
+}
 .res-agent { animation-name: res-agent; }
-@keyframes res-agent { 0%, 37% { opacity: 0; } 41%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes res-agent { 0%, 28% { opacity: 0; } 31%, 92% { opacity: 1; } 100% { opacity: 0; } }
+/* carol, at level 00, queries level 00 only and never reaches it */
 .hl-carol { animation-name: hl-carol; }
-@keyframes hl-carol { 0%, 57% { opacity: 0; } 62%, 80% { opacity: 0.08; } 86%, 100% { opacity: 0; } }
+@keyframes hl-carol { 0%, 55% { opacity: 0; } 59%, 80% { opacity: 0.08; } 85%, 100% { opacity: 0; } }
 .br-carol, .conn-carol, .on-carol { animation-name: br-carol; }
 @keyframes br-carol {
-  0%, 57% { transform: scaleY(0); opacity: 0; }
-  58% { opacity: 1; }
-  62%, 80% { transform: scaleY(1); opacity: 1; }
-  86%, 100% { transform: scaleY(1); opacity: 0; }
+  0%, 55% { transform: scaleY(0); opacity: 0; }
+  56% { opacity: 1; }
+  59%, 80% { transform: scaleY(1); opacity: 1; }
+  85%, 100% { transform: scaleY(1); opacity: 0; }
 }
 .conn-carol, .on-carol { transform: none !important; }
 .res-carol { animation-name: res-carol; }
-@keyframes res-carol { 0%, 63% { opacity: 0; } 67%, 92% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes res-carol { 0%, 60% { opacity: 0; } 63%, 92% { opacity: 1; } 100% { opacity: 0; } }
 
 /* without motion: the finished picture */
 @media (prefers-reduced-motion: reduce) {

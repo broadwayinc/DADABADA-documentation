@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import CmdLine from './CmdLine.vue'
 import HeroDiagram from './HeroDiagram.vue'
 import KeysDiagram from './KeysDiagram.vue'
+import ProblemDiagram from './ProblemDiagram.vue'
 import { EXAMPLES, current } from './keysExamples'
 import AgentDiagram from './AgentDiagram.vue'
 import CryptoDiagram from './CryptoDiagram.vue'
@@ -18,6 +19,25 @@ const access = [
   { t: 'Private records', link: '/database/access-levels.html#who-can-read-what', d: 'A record at access\u00a0level\u00a0** can be read only by its writer and the users the writer grants it to.' },
   { t: 'Grants and access keys', link: '/database/access-levels.html#granting-access-to-a-record', d: 'Share one record with named users, or hand out a private access key that opens it for a limited time.' },
   { t: 'Rules for references', link: '/database/referencing.html', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
+]
+
+// 00 · The problem: what DADABADA set out to solve, and how
+const problems = [
+  {
+    t: 'Serverless, for real',
+    p: 'Every app needs a server of its own in front of the database, so no app is truly serverless.',
+    a: 'DADABADA checks the access rules of every record itself. Browsers, serverless functions and agents call it directly over HTTP, each with its own sign-in.',
+  },
+  {
+    t: 'Safer AI agents',
+    p: 'Give an agent the database password and it can read and change everything that password can.',
+    a: 'Each agent gets its own key: capped at an access level, limited to some collections, read-only if you want, set to expire, and revocable at any time. What it saves names the key that saved it.',
+  },
+  {
+    t: 'Scale at low cost',
+    p: 'Queries that filter and sort as they read get slower, and pricier to host, as the data grows.',
+    a: 'DADABADA writes each record\u2019s keys when it is saved, so a query reads one ready range and its cost follows the page it returns, not the size of the data. One binary, no other service to run.',
+  },
 ]
 
 const simple = [
@@ -64,6 +84,34 @@ const steps = [
           <figcaption>The writer sets each record's access level. A reader's query covers only the access levels that reader
             may read, so it never reaches the rest.</figcaption>
         </figure>
+      </div>
+    </section>
+
+    <!-- 00 the problem -->
+    <section class="sec alt-bg">
+      <div class="wrap">
+        <p class="num">00 · The problem</p>
+        <div class="split problem">
+          <div>
+            <h2>Apps and agents need a backend just to reach their data</h2>
+            <p>A database trusts whoever holds its password. So between it and every app sits a server of your
+              own that keeps the password and decides who may read what. That server is code to write, host,
+              secure and pay for, and it is what keeps an app from being fully serverless.</p>
+            <p>Hand an AI agent the password instead, and it holds the keys to everything. DADABADA was built to
+              remove that middle layer without giving anything up: safe for agents, and cheap to run as the data
+              grows.</p>
+          </div>
+          <figure class="fig">
+            <ProblemDiagram />
+          </figure>
+        </div>
+        <div class="cards grid3">
+          <div v-for="c in problems" :key="c.t" class="card flat prob">
+            <h3>{{ c.t }}</h3>
+            <p class="prob-p">{{ c.p }}</p>
+            <p>{{ c.a }}</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -379,7 +427,7 @@ p { font-size: 15.5px; line-height: 1.75; margin: 0 0 16px; }
 .code .cm { color: #6a737d; }
 .code .cn { color: #79b8ff; }
 /* the body changes with the example the key diagram plays */
-.code .swap { display: block; animation: code-swap 0.45s ease; }
+.code .swap { display: block; animation: code-swap 0.25s ease-out; }
 @keyframes code-swap { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .code .swap { animation: none; } }
 .code .ck { color: #79b8ff; }
@@ -430,6 +478,8 @@ a.card { border-top: 3px solid var(--dd-ink); }
 @media (hover: hover) and (pointer: fine) { a.card:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px var(--dd-shadow); } }
 .card p { font-size: 14px; line-height: 1.65; color: var(--dd-muted); margin: 0; }
 .card.flat { box-shadow: none; }
+/* 00 · The problem: each card names the problem (italic, above a divider), then the answer */
+.card.prob .prob-p { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--dd-line); font-style: italic; }
 
 /* install */
 .steps { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 28px; counter-reset: none; }
