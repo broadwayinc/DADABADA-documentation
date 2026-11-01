@@ -1,6 +1,6 @@
 # Operations
 
-DADABADA runs as one process on one machine. This page covers installing and upgrading it, and what an operator does after [`init`](/admin/command-line#dadabada-init): running it as a service, stopping it, changing settings, running without TLS or behind a proxy, backing up and restoring, resetting, the export file format, and reading the log.
+DADABADA runs as one process on one machine. This page covers installing and upgrading it, and what an operator does after [`init`](/admin/command-line#ddbd-init): running it as a service, stopping it, changing settings, running without TLS or behind a proxy, backing up and restoring, resetting, the export file format, and reading the log.
 
 ## Installing, upgrading and removing
 
@@ -14,7 +14,7 @@ The installer checks the system, downloads the build for its processor, checks t
 
 | what | where |
 |---|---|
-| the program | `/usr/local/bin/dadabada` (with sudo, which may ask for your password) |
+| the program | `/usr/local/bin/ddbd` (with sudo, which may ask for your password) |
 | the license files (`LICENSE`, `NOTICE`, `THIRD-PARTY-NOTICES`) | `/usr/local/share/doc/dadabada` |
 
 Without sudo, it uses `~/.local/bin` and `~/.local/share/doc/dadabada` instead, and says how to add `~/.local/bin` to your `PATH`. On an unsupported system it stops and says why, without installing anything. It never touches data folders.
@@ -26,45 +26,49 @@ Two settings change what it does. Put them before `sh`:
 | `DADABADA_VERSION` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_VERSION=0.1.0 sh` | installs that version instead of the newest |
 | `DADABADA_INSTALL_DIR` | `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 \| DADABADA_INSTALL_DIR=/opt/dadabada/bin sh` | installs the program into that folder; the license files go to `/opt/dadabada/share/doc/dadabada` |
 
-Check the installed version with `dadabada version`, which prints `dadabada 0.1.3`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
+Check the installed version with `ddbd version`, which prints `ddbd 0.1.4`. In the [Web Admin](/admin/web-admin#tools), the **Tools** screen shows the version the running server was started with (which stays the old one until the server restarts after an update), and **[Check for updates]** there tells whether a newer release is out.
 
 ### Upgrading
 
-Run the install command again. It replaces the program with the newest version and leaves every data folder as it is. A running server keeps using the old program until it restarts, so restart it afterwards: **Restart** on the Tools page of the [Web Admin](/admin/web-admin) restarts it in place, `dadabada restart --data <folder>` restarts it in your terminal, and `sudo systemctl restart dadabada` restarts the service.
+Run the install command again. It replaces the program with the newest version and leaves every data folder as it is. A running server keeps using the old program until it restarts, so restart it afterwards: **Restart** on the Tools page of the [Web Admin](/admin/web-admin) restarts it in place, `ddbd restart --data <folder>` restarts it in your terminal, and `sudo systemctl restart dadabada` restarts the service.
+
+::: tip Upgrading from 0.1.3 or earlier
+Before 0.1.4 the program was called `dadabada`; it is now `ddbd`, and the commands are the same (`ddbd start`, `ddbd admin`, ...). The installer replaces an old `dadabada` in the same folder with a link to `ddbd`, so a systemd unit, a script or a running server that still uses the old name starts the new version. Change them to `ddbd` when convenient, for example `ExecStart=/usr/local/bin/ddbd start --data /srv/dadabada` in the [service unit](#running-as-a-service).
+:::
 
 ### Installing without the install script
 
 On a machine that cannot run the script (no internet access, or a review step before anything is installed), download the files by hand. Each version has one archive per processor, plus its checksum:
 
 ```
-https://cdn.broadwayinc.com/get/dadabada/<version>/dadabada-<version>-linux-<processor>.tar.gz
-https://cdn.broadwayinc.com/get/dadabada/<version>/dadabada-<version>-linux-<processor>.tar.gz.sha256
+https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-linux-<processor>.tar.gz
+https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-linux-<processor>.tar.gz.sha256
 ```
 
-`<processor>` is `x86_64` or `aarch64`, and the newest `<version>` is the text at `https://cdn.broadwayinc.com/get/dadabada/latest`. For version 0.1.0 on x86_64:
+`<processor>` is `x86_64` or `aarch64`, and the newest `<version>` is the text at `https://cdn.broadwayinc.com/get/dadabada/latest`. Versions 0.1.3 and earlier are named `dadabada-<version>-linux-<processor>.tar.gz` and hold a program called `dadabada`. For version 0.1.4 on x86_64:
 
 ```bash
-$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.3/dadabada-0.1.3-linux-x86_64.tar.gz
-$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.3/dadabada-0.1.3-linux-x86_64.tar.gz.sha256
-$ sha256sum -c dadabada-0.1.3-linux-x86_64.tar.gz.sha256
-$ tar -xzf dadabada-0.1.3-linux-x86_64.tar.gz
-$ sudo install -m 0755 dadabada-0.1.3-linux-x86_64/dadabada /usr/local/bin/dadabada
+$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.4/ddbd-0.1.4-linux-x86_64.tar.gz
+$ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.4/ddbd-0.1.4-linux-x86_64.tar.gz.sha256
+$ sha256sum -c ddbd-0.1.4-linux-x86_64.tar.gz.sha256
+$ tar -xzf ddbd-0.1.4-linux-x86_64.tar.gz
+$ sudo install -m 0755 ddbd-0.1.4-linux-x86_64/ddbd /usr/local/bin/ddbd
 ```
 
-`sha256sum -c` must answer `dadabada-0.1.3-linux-x86_64.tar.gz: OK`; if it does not, the download is damaged, so download it again. The folder also holds `LICENSE`, `NOTICE` and `THIRD-PARTY-NOTICES`.
+`sha256sum -c` must answer `ddbd-0.1.4-linux-x86_64.tar.gz: OK`; if it does not, the download is damaged, so download it again. The folder also holds `LICENSE`, `NOTICE` and `THIRD-PARTY-NOTICES`.
 
 ### Removing
 
 ```bash
-$ sudo rm /usr/local/bin/dadabada
+$ sudo rm /usr/local/bin/ddbd
 $ sudo rm -r /usr/local/share/doc/dadabada
 ```
 
-This removes the program only. Data folders stay; delete one with `rm -r <data folder>` when its data is no longer needed (see [Resetting the database](#resetting-the-database)).
+If an upgrade from 0.1.3 or earlier left the `/usr/local/bin/dadabada` link, remove it too: `sudo rm /usr/local/bin/dadabada`. This removes the program only. Data folders stay; delete one with `rm -r <data folder>` when its data is no longer needed (see [Resetting the database](#resetting-the-database)).
 
 ## Running as a service
 
-A systemd unit runs `dadabada start` as its own user and restarts it on failure:
+A systemd unit runs `ddbd start` as its own user and restarts it on failure:
 
 ```ini
 # /etc/systemd/system/dadabada.service
@@ -74,17 +78,17 @@ After=network.target
 
 [Service]
 User=dadabada
-ExecStart=/usr/local/bin/dadabada start --data /srv/dadabada
+ExecStart=/usr/local/bin/ddbd start --data /srv/dadabada
 Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
 ```
 
-The data folder must already exist (made with `dadabada init` as that user). Run admin commands as the same user, because only the OS user who started the server can open the admin socket:
+The data folder must already exist (made with `ddbd init` as that user). Run admin commands as the same user, because only the OS user who started the server can open the admin socket:
 
 ```bash
-$ sudo -u dadabada dadabada admin --data /srv/dadabada status
+$ sudo -u dadabada ddbd admin --data /srv/dadabada status
 ```
 
 `systemctl stop dadabada` sends SIGTERM, which stops DADABADA cleanly.
@@ -94,9 +98,9 @@ $ sudo -u dadabada dadabada admin --data /srv/dadabada status
 | how | when |
 |---|---|
 | Ctrl-C in the terminal running `start` | you started it by hand |
-| `dadabada stop --data <folder>` | from any terminal, as the operating system user who runs it |
+| `ddbd stop --data <folder>` | from any terminal, as the operating system user who runs it |
 | **Stop** on the Tools page of the [Web Admin](/admin/web-admin) | from a browser, signed in as admin |
-| `kill -TERM <pid>` or `kill -INT <pid>` | it runs in the background (find the pid with `pgrep -af "dadabada start"`) |
+| `kill -TERM <pid>` or `kill -INT <pid>` | it runs in the background (find the pid with `pgrep -af "ddbd start"`) |
 | `systemctl stop dadabada` | it runs as a service |
 
 All of them stop it the same clean way:
@@ -120,7 +124,7 @@ If the process is killed hard (`kill -9`), no saved record is lost: the storage 
 
 | how | where it runs afterwards |
 |---|---|
-| `dadabada restart --data <folder>` | in the terminal where you typed it, in the foreground |
+| `ddbd restart --data <folder>` | in the terminal where you typed it, in the foreground |
 | **Restart** on the Tools page of the [Web Admin](/admin/web-admin) | where it ran before: the same process id, the same terminal or log file, the same options |
 | `systemctl restart dadabada` | as the service |
 
@@ -131,17 +135,17 @@ Each one stops the server cleanly first, then starts it. The Web Admin restart s
 | way | what it changes | when it applies |
 |---|---|---|
 | edit `<data folder>/dadabada.toml`, then restart (stop + `start`) | every setting (see [Settings](/admin/settings)) | on the next start |
-| `dadabada start --notify-keep <duration> --private-key-ttl <duration> --max-indexes <number> --max-tags <number>` | those four, for this run only (the file is not changed) | now, until the next start without them |
+| `ddbd start --notify-keep <duration> --private-key-ttl <duration> --max-indexes <number> --max-tags <number>` | those four, for this run only (the file is not changed) | now, until the next start without them |
 | Web Admin, Settings page | every setting; saved to `dadabada.toml` | `session_idle_hours`, `notify_keep`, `private_key_ttl`, `login_free_attempts`, `login_max_delay`, `max_indexes`, `max_tags`, `admin_session_idle_minutes` at once; `port`, `bind`, `tls`, `tls_cert`, `tls_key` and `[rocksdb]` on the next start |
-| `dadabada admin --data <folder> settings` | (shows) every setting in force, and saved values waiting for the next start | |
-| `dadabada admin --data <folder> user ...`, `web-password`, `secret rotate` | users and levels, the web admin password, the private-key secret | at once |
+| `ddbd admin --data <folder> settings` | (shows) every setting in force, and saved values waiting for the next start | |
+| `ddbd admin --data <folder> user ...`, `web-password`, `secret rotate` | users and levels, the web admin password, the private-key secret | at once |
 
 Notes:
 
 - `init` options (`--port`, `--bind`, `--tls`) only set the first values; after that, change `dadabada.toml` (or the Web Admin), not `init`.
-- To move to another port: change `port`, restart, and tell clients the new address. The certificate stays the same, but `dadabada connect` remembers trusted fingerprints per address (`<server address>:<port>`), so it asks once to trust the server at the new port.
-- To use your own certificate (one from a public certificate authority removes the browser warning): set `tls_cert` and `tls_key` to its PEM files and restart. `dadabada connect` refuses a server whose certificate changed; delete that server's line in `~/.config/dadabada/known_hosts` and connect again to trust the new one.
-- To make a new self-signed certificate: run `dadabada init --data /tmp/dd-cert` (a throwaway folder; it also gets an empty database), stop the server, copy `/tmp/dd-cert/tls/cert.pem` and `key.pem` over the files in `<data folder>/tls/`, start again, and delete `/tmp/dd-cert`. `start` prints the new fingerprint; clients must trust it again as above.
+- To move to another port: change `port`, restart, and tell clients the new address. The certificate stays the same, but `ddbd connect` remembers trusted fingerprints per address (`<server address>:<port>`), so it asks once to trust the server at the new port.
+- To use your own certificate (one from a public certificate authority removes the browser warning): set `tls_cert` and `tls_key` to its PEM files and restart. `ddbd connect` refuses a server whose certificate changed; delete that server's line in `~/.config/dadabada/known_hosts` and connect again to trust the new one.
+- To make a new self-signed certificate: run `ddbd init --data /tmp/dd-cert` (a throwaway folder; it also gets an empty database), stop the server, copy `/tmp/dd-cert/tls/cert.pem` and `key.pem` over the files in `<data folder>/tls/`, start again, and delete `/tmp/dd-cert`. `start` prints the new fingerprint; clients must trust it again as above.
 - A setting the server cannot use (a bad duration, a busy port, missing certificate files) stops `start` with a message saying which one; nothing is half-started.
 
 ## Running on plain HTTP
@@ -152,10 +156,10 @@ To choose:
 
 | database | plain HTTP | HTTPS served by DADABADA |
 |---|---|---|
-| new | `dadabada init --data <folder>` (the default) | `dadabada init --data <folder> --tls` |
+| new | `ddbd init --data <folder>` (the default) | `ddbd init --data <folder> --tls` |
 | existing | set `tls = false` in `<data folder>/dadabada.toml` (or untick TLS in the Web Admin's Settings) and restart. Certificate files stay, so TLS can be turned back on later | set `tls = true` (or tick TLS in Settings) and restart. A self-signed certificate is made if none exists |
 
-Over plain HTTP, use `http://<server address>:<port>/` in the browser (on the server itself, `http://localhost:7070/`) and `dadabada connect <server address>:<port>`. When DADABADA serves HTTPS itself, use `https://` and `dadabada connect <server address>:<port> --tls`.
+Over plain HTTP, use `http://<server address>:<port>/` in the browser (on the server itself, `http://localhost:7070/`) and `ddbd connect <server address>:<port>`. When DADABADA serves HTTPS itself, use `https://` and `ddbd connect <server address>:<port> --tls`.
 
 What changes over plain HTTP:
 
@@ -196,7 +200,7 @@ Keep DADABADA on plain HTTP bound to `127.0.0.1` (`bind = "127.0.0.1"`, `tls = f
 `backup <folder>` in the [Admin Shell](/admin/admin-shell#server) (or **Back up** on the Web Admin's Tools page) writes a consistent copy of the database while the server runs. `<folder>` must not exist; give an absolute path, because the server process creates it. A copy of the settings file is put inside as `dadabada.toml.copy`.
 
 ```bash
-$ dadabada admin --data /srv/dadabada backup /srv/backups/dadabada-2026-10-29
+$ ddbd admin --data /srv/dadabada backup /srv/backups/dadabada-2026-10-29
 ```
 
 To restore:
@@ -222,7 +226,7 @@ This deletes data permanently. Make a backup or an export first.
 ```bash
 # 1. stop the server
 $ rm -rf <data folder>/db
-$ dadabada start --data <data folder>
+$ ddbd start --data <data folder>
 ```
 
 `start` creates a new, empty database. Gone: every user, record, grant, subscription, agent key, notification, session, the web admin password and the private-key secret. Kept: `dadabada.toml` and `tls/`. Add users and set the web admin password again.
@@ -232,8 +236,8 @@ $ dadabada start --data <data folder>
 ```bash
 # 1. stop the server
 $ rm -rf <data folder>
-$ dadabada init --port 7070 --data <data folder>
-$ dadabada start --data <data folder>
+$ ddbd init --port 7070 --data <data folder>
+$ ddbd start --data <data folder>
 ```
 
 **Remove only some data** without resetting: delete users (`user del`, which removes their records too), delete records (`record del`, or [`deleteRecords`](/api-reference/database#deleterecords) by query, or the Web Admin's Tools page), or export what you want to keep, reset, and import it back.
@@ -287,15 +291,15 @@ The server writes to its standard output. Where that lands depends on how it was
 
 | started how | the log is |
 |---|---|
-| `dadabada start` in a terminal | on the screen; gone when the terminal closes |
-| `dadabada start > dadabada.log 2>&1` | saved to `dadabada.log` (overwritten at each start; use `>>` to append) |
-| `nohup dadabada start >> dadabada.log 2>&1 &` | the same, and the server keeps running after you log out |
+| `ddbd start` in a terminal | on the screen; gone when the terminal closes |
+| `ddbd start > dadabada.log 2>&1` | saved to `dadabada.log` (overwritten at each start; use `>>` to append) |
+| `nohup ddbd start >> dadabada.log 2>&1 &` | the same, and the server keeps running after you log out |
 | as a systemd service | in the journal: `journalctl -u dadabada -f` |
 
 So to keep a log file, redirect the output when you start the server:
 
 ```bash
-$ cd /srv && nohup dadabada start --data /srv/dadabada >> /srv/dadabada.log 2>&1 &
+$ cd /srv && nohup ddbd start --data /srv/dadabada >> /srv/dadabada.log 2>&1 &
 $ tail -f /srv/dadabada.log
 ```
 

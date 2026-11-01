@@ -6,7 +6,7 @@ This page covers what every method shares: how a call is made, trusting the cert
 
 | part | rule |
 |---|---|
-| URL | `POST http://<server address>:<port>/v1/<method>` (`https://` when HTTPS is served, by a load balancer in front of DADABADA or by DADABADA itself with `--tls`), for example `POST http://localhost:7070/v1/postRecord`. `<method>` is the method name, written as in this reference. The port is the `port` setting: `7070` unless `dadabada init --port` chose another. |
+| URL | `POST http://<server address>:<port>/v1/<method>` (`https://` when HTTPS is served, by a load balancer in front of DADABADA or by DADABADA itself with `--tls`), for example `POST http://localhost:7070/v1/postRecord`. `<method>` is the method name, written as in this reference. The port is the `port` setting: `7070` unless `ddbd init --port` chose another. |
 | Body | One JSON object. An empty body counts as `{}`. Send `Content-Type: application/json`; it is good practice but not required, because the body is read as JSON either way. A body that is not valid JSON answers `400 INVALID_REQUEST` `"The body is not valid JSON: <reason>"`. |
 | Token | `Authorization: Bearer <token>` on every call except [`login`](#login), with `<token>` (angle brackets included) replaced by a session token `s_...` from `login` or an agent key `dk_...`: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. An agent key is sent the same way and needs no login. Only [`listen`](/api-reference/database#listen) also takes the token as `?token=<token>` in the URL, for a browser `EventSource`; on every other call `?token=` is ignored, and a call without the header answers `401 UNAUTHORIZED` `"Sign in first: send Authorization: Bearer <session token or agent key>."` |
 | Unknown keys | [`postRecord`](/api-reference/database#postrecord) and [`postRecords`](/api-reference/database#postrecords) refuse unknown keys in `config`, `config.collection` and `config.source`; [`getRecords`](/api-reference/database#getrecords) refuses them in `query` and `query.index`. The answer is `400 INVALID_REQUEST` `"Unknown <object> key \"<key>\". Allowed: ..."`. The methods whose body is `{query, fetch}` ([`getRecords`](/api-reference/database#getrecords), [`getCollections`](/api-reference/database#getcollections), [`getTags`](/api-reference/database#gettags), [`getIndexes`](/api-reference/database#getindexes), [`getUniqueId`](/api-reference/database#getuniqueid), [`getFeed`](/api-reference/database#getfeed)) refuse any key at the top of the body other than `query` and `fetch`: `400 INVALID_REQUEST` `"Unknown key \"<key>\". The body is {\"query\": {...}, \"fetch\": {...}}; query fields go inside query."`. Other methods ignore keys they do not use. |
@@ -138,7 +138,7 @@ print(json.load(urllib.request.urlopen(req)))
 ```
 
 ```text [User shell]
-$ dadabada connect localhost:7070 --user alice
+$ ddbd connect localhost:7070 --user alice
 Password: correct-horse
 Signed in as alice (level 10).
 ```

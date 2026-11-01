@@ -30,10 +30,11 @@ const simple = [
 ]
 
 const steps = [
-  { t: 'Install', cmd: INSTALL, note: 'Linux\u00a0x86_64 or arm64, glibc\u00a02.34 or newer. Puts dadabada in /usr/local/bin, or in ~/.local/bin without sudo.' },
-  { t: 'Create a data folder', cmd: 'dadabada init --data ~/dadabada-data' },
-  { t: 'Start the server', cmd: 'dadabada start --data ~/dadabada-data', note: 'Answers on http://localhost:7070.' },
-  { t: 'Turn on the web admin', cmd: 'dadabada admin --data ~/dadabada-data web-password', note: 'Then open http://localhost:7070 and add your first user.' },
+  { t: 'Install', cmd: INSTALL, note: 'Linux\u00a0x86_64 or arm64, glibc\u00a02.34 or newer. Puts ddbd in /usr/local/bin, or in ~/.local/bin without sudo.' },
+  { t: 'Create a data folder', cmd: 'ddbd init --data ~/dadabada-data' },
+  { t: 'Start the server', cmd: 'ddbd start --data ~/dadabada-data', note: 'Answers on http://localhost:7070.' },
+  // the last step's follow-up is the one people miss, so it is a call-out, not a note
+  { t: 'Turn on the web admin', cmd: 'ddbd admin --data ~/dadabada-data web-password', open: 'http://localhost:7070', then: 'and add your first user.' },
 ]
 </script>
 
@@ -224,6 +225,10 @@ const steps = [
               <h3>{{ s.t }}</h3>
               <CmdLine :cmd="s.cmd" />
               <p v-if="s.note" class="note">{{ s.note }}</p>
+              <p v-if="s.open" class="next">
+                <span class="next-arrow" aria-hidden="true">→</span>
+                <span>Then open <a :href="s.open" target="_blank" rel="noopener">{{ s.open }}</a> {{ s.then }}</span>
+              </p>
             </div>
           </li>
         </ol>
@@ -441,6 +446,23 @@ a.card { border-top: 3px solid var(--dd-ink); }
 }
 .step-body h3 { margin: 10px 0 12px; }
 .note { font-size: 13px; color: var(--dd-muted); margin: 10px 0 0; }
+.next {
+  display: flex; align-items: baseline; gap: 12px;
+  margin: 16px 0 0; padding: 14px 18px;
+  border: 1.5px solid var(--dd-ink);
+  background: var(--dd-paper);
+  box-shadow: 3px 3px var(--dd-shadow);
+  color: var(--dd-ink);
+  font-size: 17px; font-weight: 600; line-height: 1.5;
+}
+.next-arrow { flex: none; font-weight: 700; }
+.next a {
+  color: var(--dd-ink);
+  font-family: var(--vp-font-family-mono);
+  text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 4px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 639px) { .next { font-size: 15px; padding: 12px 14px; gap: 10px; } }
 .after { margin-top: 40px; color: var(--dd-muted); max-width: 52rem; }
 .after a { color: var(--dd-ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
 .after code, .intro code { font-size: 0.9em; background: var(--dd-soft); padding: 2px 6px; }

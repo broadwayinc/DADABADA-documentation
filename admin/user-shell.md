@@ -3,7 +3,7 @@
 The user shell is a terminal client for the HTTP API. It signs in as a user (or with an agent key), and each command sends an ordinary API call, so it is a way to try a query or look at a record before writing the same request in code.
 
 ```bash
-$ dadabada connect 127.0.0.1:7070 --user alice
+$ ddbd connect 127.0.0.1:7070 --user alice
 ```
 
 It asks for the password, then waits at the `alice>` prompt:
@@ -14,7 +14,7 @@ alice> get products --index "price >= 1000"
 alice> exit
 ```
 
-Open it with [`dadabada connect`](/admin/command-line#dadabada-connect). After signing in it prints `Signed in as alice (level 10).` The prompt is the username followed by `>`, such as `alice>` (with an agent key, the username and the key name: `alice/shop-bot>`). Options can be written with a space or with `=`: `--level 05` or `--level=05`. Quote values with spaces. `help` lists the commands; `exit`, `quit`, `logout` or Ctrl-D signs out and leaves. A command given after `dadabada connect <server address>:<port>` on the command line runs once, and the shell signs out and exits. Errors are printed as `<code>: <message>`, for example `NO_ACCESS: You have no access to record VZOat4ixBwfABGAq.`
+Open it with [`ddbd connect`](/admin/command-line#ddbd-connect). After signing in it prints `Signed in as alice (level 10).` The prompt is the username followed by `>`, such as `alice>` (with an agent key, the username and the key name: `alice/shop-bot>`). Options can be written with a space or with `=`: `--level 05` or `--level=05`. Quote values with spaces. `help` lists the commands; `exit`, `quit`, `logout` or Ctrl-D signs out and leaves. A command given after `ddbd connect <server address>:<port>` on the command line runs once, and the shell signs out and exits. Errors are printed as `<code>: <message>`, for example `NO_ACCESS: You have no access to record VZOat4ixBwfABGAq.`
 
 ## Value typing
 

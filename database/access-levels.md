@@ -2,7 +2,7 @@
 
 Every user and every record has an access level, a two-digit number from `"00"` to `"99"`. This page covers how levels decide who reads which record, and the ways to open a record to more users: grants and private access keys.
 
-- **A user's level is set by the admin**: `dadabada admin user add alice --level 10`, later `dadabada admin user level alice 20`.
+- **A user's level is set by the admin**: `ddbd admin user add alice --level 10`, later `ddbd admin user level alice 20`.
 - **A record's level is set by the user who writes it**, in `config.collection.access_level` of [`postRecord`](/api-reference/database#postrecord). A user can post at their own level or below. Left out, the level is `"00"`.
 - **A user reads the records at or below their own level.** A level `10` user reads records `"00"` to `"10"`, and not records `"11"` to `"99"`.
 - **A record can be private**, with the level `"**"`. A private record can be read by its writer, by the users the writer grants access to, and by a user holding a private access key for it.
@@ -838,8 +838,8 @@ The key is given if you can read the record now, or if you can read the record n
 | the key | |
 |---|---|
 | works for | the user who asked, and that record only. Agent key limits and the subscription rule still apply |
-| lasts | `private_key_ttl` from the settings file (default `1h`), or `dadabada start --private-key-ttl` |
-| is cancelled by | its expiry, or `dadabada admin secret rotate`, which cancels every key at once |
+| lasts | `private_key_ttl` from the settings file (default `1h`), or `ddbd start --private-key-ttl` |
+| is cancelled by | its expiry, or `ddbd admin secret rotate`, which cancels every key at once |
 
 ### Example
 
@@ -1022,5 +1022,5 @@ Use a key in a direct lookup (`query.record_id` or `query.unique_id`). A key doe
 :::
 
 ::: tip
-Keys depend on the server secret. That is why `dadabada admin secret rotate` cancels every key at once, and why a backup includes the secret.
+Keys depend on the server secret. That is why `ddbd admin secret rotate` cancels every key at once, and why a backup includes the secret.
 :::

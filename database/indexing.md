@@ -2439,7 +2439,7 @@ VZOat4cLmXRdBGAq  products/00  [price=-1.5 title="안녕하세요 세계"]  tags
 - A query that is empty after loosening (only spaces or punctuation, such as `"--"`) is refused: `The search text is empty after loosening (it had only spaces or punctuation).`
 
 ::: tip
-The loose form of a value is written when the record is saved. If a new build of DADABADA changes the loosening rules, `dadabada start` prints a note and the admin runs `dadabada admin --data <folder> rebuild-loose` once to rewrite every loose key.
+The loose form of a value is written when the record is saved. If a new build of DADABADA changes the loosening rules, `ddbd start` prints a note and the admin runs `ddbd admin --data <folder> rebuild-loose` once to rewrite every loose key.
 :::
 
 ## Restrictions

@@ -257,7 +257,7 @@ A query without `access_level` covers every level you can read, your own `"**"` 
 ## Who may delete a record
 
 - **The uploader** can delete their own records.
-- **The admin** (the operating system user who runs DADABADA) can delete any record with `dadabada admin record del <record id>` or the web admin, read-only ones included. No network user has admin powers.
+- **The admin** (the operating system user who runs DADABADA) can delete any record with `ddbd admin record del <record id>` or the web admin, read-only ones included. No network user has admin powers.
 - **The uploader of a record with `can_remove_referencing_records`** can delete the records that point to it, whoever uploaded them. See [the example below](#deleting-records-that-point-to-your-record).
 - **Read-only records** (`readonly: true`) can be deleted by the admin only. Trying as the uploader:
 

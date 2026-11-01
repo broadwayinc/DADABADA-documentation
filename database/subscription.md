@@ -1168,7 +1168,7 @@ Notifications arrive on `GET /v1/listen` ([`listen`](/api-reference/database#lis
 | `title`, `body` | the record's `notification`, or the default text for `notify_referencing_records` |
 | `created` | when, in ms |
 
-Missed notifications are kept for `notify_keep` (settings file, default `1d`, or `dadabada start --notify-keep`) and replayed when you reconnect with `Last-Event-ID`. Without `Last-Event-ID` nothing is replayed: the stream starts with `: connected` and continues live. A missing or unknown token answers `401 UNAUTHORIZED` instead of a stream.
+Missed notifications are kept for `notify_keep` (settings file, default `1d`, or `ddbd start --notify-keep`) and replayed when you reconnect with `Last-Event-ID`. Without `Last-Event-ID` nothing is replayed: the stream starts with `: connected` and continues live. A missing or unknown token answers `401 UNAUTHORIZED` instead of a stream.
 
 ### Listening
 

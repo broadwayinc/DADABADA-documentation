@@ -43,7 +43,7 @@ page = json.load(urllib.request.urlopen(req))
 ```
 
 ```text [User shell]
-$ dadabada connect localhost:7070 --key <agent key>
+$ ddbd connect localhost:7070 --key <agent key>
 alice/shop-bot> get products
 ```
 
@@ -212,7 +212,7 @@ alice> agent create shop-bot --level 05 --read-only --collections products --exp
 
 See [AgentKey](/api-reference/data-types#agentkey)
 
-The admin lists every user's keys with `dadabada admin agents`.
+The admin lists every user's keys with `ddbd admin agents`.
 
 #### Example
 
@@ -277,7 +277,7 @@ AgentKey // The revoked key's shape, without the key itself. From now on the key
 
 See [AgentKey](/api-reference/data-types#agentkey)
 
-Keys are revoked one at a time. Records the key wrote keep `agent: "<name>"`. The admin can revoke any user's key with `dadabada admin agent revoke <key id>`, and deleting a user removes their keys.
+Keys are revoked one at a time. Records the key wrote keep `agent: "<name>"`. The admin can revoke any user's key with `ddbd admin agent revoke <key id>`, and deleting a user removes their keys.
 
 #### Example
 
