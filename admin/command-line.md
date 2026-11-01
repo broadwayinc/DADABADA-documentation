@@ -1,6 +1,6 @@
 # Command Line
 
-DADABADA is one program, `ddbd`. Install it with `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh` (see [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing)). This page lists its subcommands and their options:
+DADABADA is one program, `ddbd`. Install it with `curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh` on Linux, or `brew install broadwayinc/tap/dadabada` on macOS (see [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing)). This page lists its subcommands and their options:
 
 ```
 ddbd <command> [<options>]
@@ -122,7 +122,7 @@ Stopped.
 
 When no server is running for that folder, it says so and exits with status 1: `No DADABADA is running for /srv/dadabada (could not open /srv/dadabada/admin.sock: ...)`.
 
-For a server that runs as a systemd service, use `systemctl stop dadabada` instead, so systemd knows it was stopped on purpose.
+For a server that runs as a systemd service, use `systemctl stop dadabada` instead, so systemd knows it was stopped on purpose. For a Homebrew service on macOS, use `brew services stop dadabada`, or it starts again at the next login.
 
 ## `ddbd restart`
 
@@ -132,7 +132,7 @@ ddbd restart [--data <folder>] [<start options>]
 
 Stops the running server (as `ddbd stop` does), then starts it again **in this terminal**, in the foreground, with the options given here. It takes the same options as [`ddbd start`](#ddbd-start). If no server is running for the folder, it says so and starts one.
 
-A server that was running in the background or in another terminal ends up running in the terminal where `restart` was typed. To restart a server where it already runs (its terminal, its log file, its process id), use **Restart** on the Tools page of the [Web Admin](/admin/web-admin). For a systemd service, use `systemctl restart dadabada`.
+A server that was running in the background or in another terminal ends up running in the terminal where `restart` was typed. To restart a server where it already runs (its terminal, its log file, its process id), use **Restart** on the Tools page of the [Web Admin](/admin/web-admin). For a systemd service, use `systemctl restart dadabada`; for a Homebrew service, `brew services restart dadabada`.
 
 ## `ddbd admin`
 

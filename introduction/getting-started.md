@@ -12,13 +12,23 @@ This page takes you from an empty machine to a running DADABADA with a user and 
 
 ## 1. Install DADABADA
 
-DADABADA runs on Linux, on x86_64 or arm64 processors, with glibc 2.34 or newer: for example Ubuntu 22.04 or 24.04, Debian 12, RHEL 9 or Amazon Linux 2023. On the machine that will run the database:
+DADABADA runs on Linux and on macOS. Install it on the machine that will run the database.
+
+**Linux**, on x86_64 or arm64 processors, with glibc 2.34 or newer: for example Ubuntu 22.04 or 24.04, Debian 12, RHEL 9 or Amazon Linux 2023.
 
 ```bash
 $ curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh
 ```
 
 The installer downloads DADABADA, checks the download, and puts the `ddbd` program in `/usr/local/bin`, so you can run it from any folder. Writing there needs administrator rights, so it may ask for your password once. Without sudo, it installs into `~/.local/bin` instead and tells you how to add that folder to your `PATH`. The license files go next to it, in `/usr/local/share/doc/dadabada`.
+
+**macOS** 11 or newer, on Apple Silicon or Intel, with [Homebrew](https://brew.sh).
+
+```bash
+$ brew install broadwayinc/tap/dadabada
+```
+
+Homebrew downloads DADABADA, checks the download, and puts `ddbd` with its other programs (`/opt/homebrew/bin` on Apple Silicon, `/usr/local/bin` on Intel), which are already on your `PATH`. It also sets up a data folder of its own, for running DADABADA in the background ([Running as a service](/admin/operations#running-as-a-service)). That one uses the same port, 7070, so leave it stopped while you follow this page.
 
 Check that it worked:
 
@@ -30,7 +40,7 @@ $ ddbd version
 ddbd x.x.x
 ```
 
-Running the same install command again later updates DADABADA to the newest version. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
+Running the same install command again later updates DADABADA to the newest version; with Homebrew, `brew upgrade dadabada` does. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
 
 ## 2. Create a data folder
 

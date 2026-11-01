@@ -4,7 +4,7 @@ DADABADA runs as one process on one machine. This page covers installing and upg
 
 ## Installing, upgrading and removing
 
-DADABADA runs on Linux, on x86_64 or arm64 processors, with glibc 2.34 or newer: for example Ubuntu 22.04 or 24.04, Debian 12, RHEL 9 or Amazon Linux 2023. Install it with:
+DADABADA runs on Linux and on macOS. On macOS, Homebrew installs it: see [On macOS](#on-macos). On Linux it runs on x86_64 or arm64 processors, with glibc 2.34 or newer: for example Ubuntu 22.04 or 24.04, Debian 12, RHEL 9 or Amazon Linux 2023. Install it with:
 
 ```bash
 $ curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh
@@ -30,7 +30,7 @@ Check the installed version with `ddbd version`, which prints `ddbd x.x.x`. In t
 
 ### Upgrading
 
-Run the install command again. It replaces the program with the newest version and leaves every data folder as it is. A running server keeps using the old program until it restarts, so restart it afterwards: **Restart** on the Tools page of the [Web Admin](/admin/web-admin) restarts it in place, `ddbd restart --data <folder>` restarts it in your terminal, and `sudo systemctl restart dadabada` restarts the service.
+Run the install command again (with Homebrew, `brew upgrade dadabada`). It replaces the program with the newest version and leaves every data folder as it is. A running server keeps using the old program until it restarts, so restart it afterwards: **Restart** on the Tools page of the [Web Admin](/admin/web-admin) restarts it in place, `ddbd restart --data <folder>` restarts it in your terminal, `sudo systemctl restart dadabada` restarts the systemd service, and `brew services restart dadabada` the Homebrew one.
 
 ::: tip Upgrading from 0.1.3 or earlier
 Before 0.1.4 the program was called `dadabada`; it is now `ddbd`, and the commands are the same (`ddbd start`, `ddbd admin`, ...). The installer replaces an old `dadabada` in the same folder with a link to `ddbd`, so a systemd unit, a script or a running server that still uses the old name starts the new version. Change them to `ddbd` when convenient, for example `ExecStart=/usr/local/bin/ddbd start --data /srv/dadabada` in the [service unit](#running-as-a-service).
@@ -38,14 +38,14 @@ Before 0.1.4 the program was called `dadabada`; it is now `ddbd`, and the comman
 
 ### Installing without the install script
 
-On a machine that cannot run the script (no internet access, or a review step before anything is installed), download the files by hand. Each version has one archive per processor, plus its checksum:
+On a machine that cannot run the script (no internet access, or a review step before anything is installed), download the files by hand. Each version has one archive per system and processor, plus its checksum:
 
 ```
-https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-linux-<processor>.tar.gz
-https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-linux-<processor>.tar.gz.sha256
+https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-<system>-<processor>.tar.gz
+https://cdn.broadwayinc.com/get/dadabada/<version>/ddbd-<version>-<system>-<processor>.tar.gz.sha256
 ```
 
-`<processor>` is `x86_64` or `aarch64`, and the newest `<version>` is the text at `https://cdn.broadwayinc.com/get/dadabada/latest`. Versions 0.1.3 and earlier are named `dadabada-<version>-linux-<processor>.tar.gz` and hold a program called `dadabada`. For version 0.1.4 on x86_64:
+`<system>` is `linux`, or `macos` from version 0.1.5 on; `<processor>` is `x86_64` or `aarch64` (`aarch64` is Apple Silicon on a Mac), and the newest `<version>` is the text at `https://cdn.broadwayinc.com/get/dadabada/latest`. Versions 0.1.3 and earlier are named `dadabada-<version>-linux-<processor>.tar.gz` and hold a program called `dadabada`. For version 0.1.4 on x86_64:
 
 ```bash
 $ curl -fsSLO https://cdn.broadwayinc.com/get/dadabada/0.1.4/ddbd-0.1.4-linux-x86_64.tar.gz
@@ -57,6 +57,8 @@ $ sudo install -m 0755 ddbd-0.1.4-linux-x86_64/ddbd /usr/local/bin/ddbd
 
 `sha256sum -c` must answer `ddbd-0.1.4-linux-x86_64.tar.gz: OK`; if it does not, the download is damaged, so download it again. The folder also holds `LICENSE`, `NOTICE` and `THIRD-PARTY-NOTICES`.
 
+On a Mac, check the download with `shasum -a 256 -c` instead of `sha256sum -c`, and download it with `curl` as above, not with a web browser: macOS refuses to run a program that came from a browser and is not notarized by Apple.
+
 ### Removing
 
 ```bash
@@ -66,9 +68,36 @@ $ sudo rm -r /usr/local/share/doc/dadabada
 
 If an upgrade from 0.1.3 or earlier left the `/usr/local/bin/dadabada` link, remove it too: `sudo rm /usr/local/bin/dadabada`. This removes the program only. Data folders stay; delete one with `rm -r <data folder>` when its data is no longer needed (see [Resetting the database](#resetting-the-database)).
 
+### On macOS
+
+DADABADA runs on macOS 11 or newer, on Apple Silicon or Intel. Install it with [Homebrew](https://brew.sh):
+
+```bash
+$ brew install broadwayinc/tap/dadabada
+```
+
+Homebrew downloads the build for the Mac's processor, checks it against its SHA-256 checksum, and installs:
+
+| what | where |
+|---|---|
+| the program | `$(brew --prefix)/bin/ddbd`: `/opt/homebrew/bin` on Apple Silicon, `/usr/local/bin` on Intel |
+| the license files (`LICENSE`, `NOTICE`, `THIRD-PARTY-NOTICES`) | `$(brew --prefix dadabada)` |
+| a data folder, for [running it as a service](#on-macos-with-homebrew) | `$(brew --prefix)/var/dadabada`, listening on `127.0.0.1:7070`: this Mac only, plain HTTP |
+
+The data folder is made once, as `ddbd init --data "$(brew --prefix)/var/dadabada" --bind 127.0.0.1` would make it, and is kept as it is when DADABADA is upgraded, reinstalled or removed. To serve other machines from it, change `bind` in its `dadabada.toml` and restart. You can also make other data folders with `ddbd init`, as on Linux.
+
+Upgrade with `brew upgrade dadabada`, then restart the server (above). Homebrew always installs the newest version; for another one, install it by hand (above). Remove it with:
+
+```bash
+$ brew services stop dadabada
+$ brew uninstall dadabada
+```
+
+The data folder stays; delete it with `rm -r "$(brew --prefix)/var/dadabada"` when its data is no longer needed. Homebrew on Linux installs and removes DADABADA the same way.
+
 ## Running as a service
 
-A systemd unit runs `ddbd start` as its own user and restarts it on failure:
+On Linux, a systemd unit runs `ddbd start` as its own user and restarts it on failure:
 
 ```ini
 # /etc/systemd/system/dadabada.service
@@ -93,6 +122,22 @@ $ sudo -u dadabada ddbd admin --data /srv/dadabada status
 
 `systemctl stop dadabada` sends SIGTERM, which stops DADABADA cleanly.
 
+### On macOS, with Homebrew
+
+Homebrew runs DADABADA as a service of your own user (with launchd), from the data folder it set up at install:
+
+```bash
+$ brew services start dadabada
+```
+
+It starts now and at every login, and starts again if it crashes, but not after a clean stop. `brew services stop dadabada` stops it cleanly and keeps it from starting at login; `brew services restart dadabada` restarts it. Its output goes to `$(brew --prefix)/var/log/dadabada.log`. Admin commands take the same data folder:
+
+```bash
+$ ddbd admin --data "$(brew --prefix)/var/dadabada" status
+```
+
+To leave out `--data`, set `DADABADA_DATA` to that folder, for example with `export DADABADA_DATA="$(brew --prefix)/var/dadabada"` in `~/.zprofile`.
+
 ## Stopping the server
 
 | how | when |
@@ -101,7 +146,8 @@ $ sudo -u dadabada ddbd admin --data /srv/dadabada status
 | `ddbd stop --data <folder>` | from any terminal, as the operating system user who runs it |
 | **Stop** on the Tools page of the [Web Admin](/admin/web-admin) | from a browser, signed in as admin |
 | `kill -TERM <pid>` or `kill -INT <pid>` | it runs in the background (find the pid with `pgrep -af "ddbd start"`) |
-| `systemctl stop dadabada` | it runs as a service |
+| `systemctl stop dadabada` | it runs as a systemd service |
+| `brew services stop dadabada` | it runs as a Homebrew service (macOS) |
 
 All of them stop it the same clean way:
 
@@ -295,6 +341,7 @@ The server writes to its standard output. Where that lands depends on how it was
 | `ddbd start > dadabada.log 2>&1` | saved to `dadabada.log` (overwritten at each start; use `>>` to append) |
 | `nohup ddbd start >> dadabada.log 2>&1 &` | the same, and the server keeps running after you log out |
 | as a systemd service | in the journal: `journalctl -u dadabada -f` |
+| as a Homebrew service | in `$(brew --prefix)/var/log/dadabada.log` (appended to): `tail -f "$(brew --prefix)/var/log/dadabada.log"` |
 
 So to keep a log file, redirect the output when you start the server:
 

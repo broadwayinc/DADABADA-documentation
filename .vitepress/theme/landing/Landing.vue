@@ -13,6 +13,7 @@ import PerfSection from './PerfSection.vue'
 const ex = computed(() => EXAMPLES[current.value])
 const dataPairs = computed(() => Object.entries(ex.value.data))
 const INSTALL = 'curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh'
+const BREW = 'brew install broadwayinc/tap/dadabada'
 
 const access = [
   { t: 'Access levels', link: '/database/access-levels.html', d: 'Every user has an access\u00a0level from 00\u00a0to\u00a099, set by the admin. A record saved at access\u00a0level\u00a005 can be read by users at\u00a005 and above. Nobody saves above their own access\u00a0level.' },
@@ -47,7 +48,10 @@ const simple = [
 ]
 
 const steps = [
-  { t: 'Install', cmd: INSTALL, note: 'Linux\u00a0x86_64 or arm64, glibc\u00a02.34 or newer. Puts ddbd in /usr/local/bin, or in ~/.local/bin without sudo.' },
+  {
+    t: 'Install', cmd: INSTALL, comment: 'Linux', note: 'x86_64 or arm64, glibc\u00a02.34 or newer. Puts ddbd in /usr/local/bin, or in ~/.local/bin without sudo.',
+    alt: BREW, altComment: 'macOS 11 or newer, Apple Silicon or Intel',
+  },
   { t: 'Create a data folder', cmd: 'ddbd init --data ~/dadabada-data' },
   { t: 'Start the server', cmd: 'ddbd start --data ~/dadabada-data', note: 'Answers on http://localhost:7070.' },
   // the last step's follow-up is the one people miss, so it is body text, not a small grey note
@@ -71,7 +75,7 @@ const steps = [
             <a class="btn alt" href="/introduction/what-is-dadabada.html">What is DADABADA?</a>
           </div>
           <ul class="hero-facts">
-            <li>Linux&nbsp;x86_64 and&nbsp;arm64</li>
+            <li>Linux and&nbsp;macOS</li>
             <li>One&nbsp;binary</li>
             <li>HTTP and&nbsp;JSON</li>
           </ul>
@@ -267,8 +271,9 @@ const steps = [
             <span class="step-n">{{ i + 1 }}</span>
             <div class="step-body">
               <h3>{{ s.t }}</h3>
-              <CmdLine :cmd="s.cmd" />
+              <CmdLine :cmd="s.cmd" :comment="s.comment" />
               <p v-if="s.note" class="note">{{ s.note }}</p>
+              <CmdLine v-if="s.alt" class="step-alt" :cmd="s.alt" :comment="s.altComment" />
               <p v-if="s.open" class="next">Then open <a :href="s.open" target="_blank" rel="noopener">{{ s.open }}</a> {{ s.then }}</p>
             </div>
           </li>
@@ -487,6 +492,7 @@ a.card { border-top: 3px solid var(--dd-ink); }
 }
 .step-body h3 { margin: 10px 0 12px; }
 .note { font-size: 13px; color: var(--dd-muted); margin: 10px 0 0; }
+.step-alt { margin-top: 18px; }
 .next { margin: 12px 0 0; color: var(--dd-ink); }
 .next a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .after { margin-top: 40px; color: var(--dd-muted); max-width: 52rem; }
