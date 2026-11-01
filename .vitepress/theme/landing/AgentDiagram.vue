@@ -81,9 +81,9 @@ text { fill: var(--dd-ink); font-size: 12.5px; white-space: pre; }
 .term ~ .line .out { fill: #b4b4b4; }
 
 .line, .flash, .cross {
-  animation-duration: 12s;
+  animation-duration: 8s;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in-out;
+  animation-timing-function: cubic-bezier(0.22, 0.9, 0.3, 1);
   animation-play-state: paused;
 }
 .playing :is(.line, .flash, .cross) { animation-play-state: running; }

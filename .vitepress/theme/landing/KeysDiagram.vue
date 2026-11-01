@@ -48,15 +48,16 @@ function play() {
   const [a, b] = EXAMPLES[current.value].range
   step.value = 0
   cursor.value = -1
-  at(150, () => (step.value = 1))
-  at(1900, () => (step.value = 2))
-  at(3100, () => (step.value = 3))
-  // the query reads its range quickly, key after key; the result then stays a moment before the next example
-  const STEP = 250
-  for (let i = a; i <= b; i++) at(3400 + (i - a) * STEP, () => (cursor.value = i))
-  const done = 3400 + (b - a) * STEP + 2000
+  // quick moves and short holds: the list is in at once, the new key soon after, the read is fast, and the
+  // result stays just long enough to read before the next example
+  at(80, () => (step.value = 1))
+  at(1000, () => (step.value = 2))
+  at(1650, () => (step.value = 3))
+  const STEP = 180
+  for (let i = a; i <= b; i++) at(1800 + (i - a) * STEP, () => (cursor.value = i))
+  const done = 1800 + (b - a) * STEP + 1700
   at(done, () => (step.value = 4))
-  at(done + 700, () => {
+  at(done + 300, () => {
     current.value = (current.value + 1) % EXAMPLES.length
     play()
   })
@@ -87,7 +88,7 @@ onBeforeUnmount(stop)
     <line class="hair" x1="24" y1="62" x2="480" y2="62" />
 
     <g v-for="r in rows" :key="`${current}-${r.i}`" class="row" :class="{ fresh: r.fresh, on: r.on, hit: hit(r.i) }"
-      :style="{ transform: `translateY(${r.y}px)`, transitionDelay: step === 1 && !r.fresh ? `${r.i * 60}ms` : '0ms' }">
+      :style="{ transform: `translateY(${r.y}px)`, transitionDelay: step === 1 && !r.fresh ? `${r.i * 35}ms` : '0ms' }">
       <rect class="row-bg" x="24" y="-13" width="456" height="26" />
       <text x="30" y="4">{{ e.coll }}</text>
       <text x="108" y="4">{{ r.lvl }}</text>
@@ -120,13 +121,13 @@ text { fill: var(--dd-ink); font-size: 12px; white-space: pre; }
 .hit text { font-weight: 700; }
 .range path { fill: none; stroke: var(--dd-ink); stroke-width: 2; }
 .range .cursor { fill: var(--dd-ink); stroke: none; }
-.read-box { fill: none; stroke: var(--dd-ink); stroke-width: 2; opacity: 0; transition: opacity 0.2s ease; }
+.read-box { fill: none; stroke: var(--dd-ink); stroke-width: 2; opacity: 0; transition: opacity 0.15s ease-out; }
 .read-box.on { opacity: 1; }
 
 /* rows move to their place (making room for the new key) and fade in and out */
-.row { opacity: 0; transition: transform 0.5s ease-in-out, opacity 0.4s ease; }
+.row { opacity: 0; transition: transform 0.28s cubic-bezier(0.22, 0.9, 0.3, 1), opacity 0.22s ease-out; }
 .row.on { opacity: 1; }
-.phase, .range { opacity: 0; transition: opacity 0.35s ease; }
+.phase, .range { opacity: 0; transition: opacity 0.2s ease-out; }
 .phase.on, .range.on { opacity: 1; }
 
 @media (prefers-reduced-motion: reduce) {
