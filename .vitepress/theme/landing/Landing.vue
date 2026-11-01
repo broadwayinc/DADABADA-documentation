@@ -21,23 +21,19 @@ const access = [
   { t: 'Rules for references', link: '/database/referencing.html', d: 'A record decides who may point to it: how many records, one per user, or only with certain index values.' },
 ]
 
-// 00 · The problem: access control needs a server in the middle. Three pain points it causes, each with how
-// writer-based access control (WBAC) fixes it.
-const problems = [
+// 00 · The solution: no server in the middle. What writer-based access control (WBAC) gives you.
+const solution = [
   {
-    t: 'Serverless apps',
-    p: 'Access rules live in a server of your own between the app and its data, so the app is never truly serverless.',
-    a: 'With WBAC the database enforces each record\u2019s rules itself. Browsers, serverless functions and agents call it directly over HTTP, each with its own sign-in.',
+    t: 'Truly serverless',
+    d: 'Your app needs no backend of its own to guard its data. Browsers and serverless functions call DADABADA directly, and the database checks each record\u2019s rules itself.',
   },
   {
-    t: 'AI agents',
-    p: 'An agent works through the same middle server and its broad rules, or holds credentials that open far more than its task needs.',
-    a: 'Each agent gets its own key: capped at an access level, limited to some collections, read-only if you want, set to expire, and revocable at any time. What it saves names the key that saved it.',
+    t: 'Safer AI agents',
+    d: 'Each agent gets its own key: capped at an access level, limited to some collections, read-only if you want, set to expire, and revocable at any time. What it saves names the key that saved it.',
   },
   {
-    t: 'Cost at scale',
-    p: 'The middle server is one more service to build, host and scale, and every request has to pass through it.',
-    a: 'There is nothing in the middle to run: clients talk to one binary. Each record\u2019s access level and keys are written with it, so a query reads one ready range whose cost follows the page it returns.',
+    t: 'Scales at low cost',
+    d: 'Nothing in the middle to run: clients talk to one binary. Each record\u2019s access level and keys are written with it, so a query reads one ready range and its cost follows the page it returns, not the size of the data.',
   },
 ]
 
@@ -88,33 +84,28 @@ const steps = [
       </div>
     </section>
 
-    <!-- 00 the problem -->
+    <!-- 00 the solution -->
     <section class="sec alt-bg">
       <div class="wrap">
-        <p class="num">00 · The problem</p>
-        <div class="split problem">
+        <p class="num">00 · The solution</p>
+        <div class="split">
           <div>
-            <h2>Today, data access needs a server in the&nbsp;middle</h2>
-            <p>Who may read or change a record is decided outside the database: a server sits between the
-              client and the data and checks every request against rules someone wrote. Every app needs one, and
-              every new kind of data means new rules on it.</p>
-            <p>That middle layer is the problem. It keeps apps from being truly serverless, it is where AI agents
-              end up with more access than their task needs, and it is one more service to build, run and scale.</p>
-            <p>DADABADA removes it with <span class="nw">writer-based</span> access control&nbsp;(WBAC): the client that writes a record decides
-              who can read it, and the database enforces that on every request. Clients get full control of their
-              data, with nothing in between.</p>
+            <h2>No server in the&nbsp;middle</h2>
+            <p>With <span class="nw">writer-based</span> access control&nbsp;(WBAC), the client that writes a record
+              decides who may read it, and DADABADA enforces that on every request. The access rules live with the
+              data, inside the database.</p>
+            <p>So browsers, serverless functions and AI agents talk to DADABADA directly over HTTP, each with its
+              own sign-in. Clients get full control of their data, and there is no backend to write, host or scale
+              just to guard it.</p>
           </div>
           <figure class="fig">
             <ProblemDiagram />
           </figure>
         </div>
         <div class="cards grid3">
-          <div v-for="c in problems" :key="c.t" class="card flat prob">
+          <div v-for="c in solution" :key="c.t" class="card flat">
             <h3>{{ c.t }}</h3>
-            <p class="prob-lbl">The problem</p>
-            <p class="prob-p">{{ c.p }}</p>
-            <p class="prob-lbl">How WBAC fixes it</p>
-            <p>{{ c.a }}</p>
+            <p>{{ c.d }}</p>
           </div>
         </div>
       </div>
@@ -126,7 +117,7 @@ const steps = [
         <p class="num">01 · Storage</p>
         <div class="split storage">
           <div>
-            <h2>JSON store, flexible queries</h2>
+            <h2>No schema, JSON store</h2>
             <p>There is no schema and no index to set up. With each record, the user who saves it names its collection,
               access level, tags and indexes. DADABADA turns those into sorted keys and writes them together with the
               record in one atomic step.</p>
@@ -483,9 +474,6 @@ a.card { border-top: 3px solid var(--dd-ink); }
 @media (hover: hover) and (pointer: fine) { a.card:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px var(--dd-shadow); } }
 .card p { font-size: 14px; line-height: 1.65; color: var(--dd-muted); margin: 0; }
 .card.flat { box-shadow: none; }
-/* 00 · The problem: each card names the problem (italic, above a divider), then how DADABADA fixes it */
-.card.prob .prob-p { padding-bottom: 14px; margin-bottom: 14px; border-bottom: 1px solid var(--dd-line); font-style: italic; }
-.card.prob .prob-lbl { font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dd-muted); margin: 0 0 6px; }
 
 /* install */
 .steps { list-style: none; padding: 0; margin: 40px 0 0; display: grid; gap: 28px; counter-reset: none; }

@@ -1,6 +1,6 @@
 import { ref } from 'vue'
 
-// The examples of the "JSON store, flexible queries" section: the postRecord body in the code block and the
+// The examples of the "No schema, JSON store" section: the postRecord body in the code block and the
 // key list in KeysDiagram show the same example at the same time. KeysDiagram moves `current` on.
 //
 // Each example shows one sorted list of keys (access level, tag, index value, as DADABADA sorts them) with
