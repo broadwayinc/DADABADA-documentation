@@ -29,6 +29,8 @@ export default defineConfig({
       { text: 'API Reference', link: '/api-reference/database', activeMatch: '^/api-reference/' },
       { text: 'Command Line', link: '/admin/command-line', activeMatch: '^/admin/' },
     ],
+    // The source code, as an icon at the right of the top bar (in the menu on phones)
+    socialLinks: [{ icon: 'github', link: 'https://github.com/broadwayinc/DDBD', ariaLabel: 'DDBD on GitHub' }],
     sidebar: [
       {
         text: 'Introduction',
