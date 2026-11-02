@@ -42,7 +42,7 @@ const trail = computed(() => (narrow.value ? { x1: 265, y1: 4, x2: 285, y2: 191 
   <svg ref="root" class="hero-dia" :class="{ playing }" :viewBox="box" role="img"
     aria-labelledby="hero-dia-title hero-dia-desc">
     <title id="hero-dia-title">Writer-based access control</title>
-    <desc id="hero-dia-desc">alice saves a record at access level 05. DADABADA keeps one sorted key range per access level.
+    <desc id="hero-dia-desc">alice saves a record at access level 05. DDBD keeps one sorted key range per access level.
       An agent key capped at access level 05 queries access levels 00 to 05 and reads the record. carol, at access level 00,
       queries access level 00 only and never reaches it.</desc>
 
@@ -61,7 +61,7 @@ const trail = computed(() => (narrow.value ? { x1: 265, y1: 4, x2: 285, y2: 191 
     <g :transform="storeAt">
 
     <!-- the store: one key range per level -->
-    <text class="strong" x="184" y="26">DADABADA</text>
+    <text class="strong" x="184" y="26">DDBD</text>
     <text class="muted" x="380" y="26" text-anchor="end">sorted by access</text>
     <rect class="store" x="184" y="40" width="196" height="330" />
     <g v-for="r in rows" :key="r.lvl">

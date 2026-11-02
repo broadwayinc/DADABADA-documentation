@@ -1,15 +1,15 @@
 # Web Admin
 
-The Web Admin is the admin's console in a browser. With it you can see everything stored in the database, add and manage users, change settings, take backups, and stop or restart the server. DADABADA serves it itself, on the same address and port as the API, so there is nothing else to install.
+The Web Admin is the admin's console in a browser. With it you can see everything stored in the database, add and manage users, change settings, take backups, and stop or restart the server. DDBD serves it itself, on the same address and port as the API, so there is nothing else to install.
 
 It is for the admin only. Apps, scripts and AI agents never use it: they sign in as [users](/users/introduction) and go through the API.
 
 ## Opening it
 
-The Web Admin is off until it has a password. On the server, as the operating system user who runs DADABADA, set one with the [Admin Shell](/admin/admin-shell):
+The Web Admin is off until it has a password. On the server, as the operating system user who runs DDBD, set one with the [Admin Shell](/admin/admin-shell):
 
 ```bash
-$ ddbd admin --data ~/dadabada-data web-password
+$ ddbd admin --data ~/ddbd-data web-password
 ```
 
 ```
@@ -134,7 +134,7 @@ The server's [settings](/admin/settings). Cards marked **applies now** take effe
 
 Work on the whole database:
 
-- **Version**: the DADABADA version this server runs. **[Check for updates]** asks `https://cdn.broadwayinc.com/get/dadabada/latest` for the newest release and says whether this one is up to date, or which command updates it. The Web Admin contacts that address only when you click, and sends nothing but the request.
+- **Version**: the DDBD version this server runs. **[Check for updates]** asks `https://cdn.broadwayinc.com/get/ddbd/latest` for the newest release and says whether this one is up to date, or which command updates it. The Web Admin contacts that address only when you click, and sends nothing but the request.
 - **Back up**, **Export** and **Import**, to and from folders and files on the server. See [Operations](/admin/operations#backup-and-restore).
 - Delete records by query, delete users in batch, or delete every record. Each asks you to type a word to confirm.
 - Rotate the secret behind private access keys.

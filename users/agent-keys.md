@@ -1,6 +1,6 @@
 # Agent Keys
 
-An agent key lets a program or an AI agent call DADABADA as you, without your password. You make the key with [`createAgentKey`](/api-reference/agent-keys#createagentkey), give it the limits you want, and hand the `dk_...` string to the agent, which sends it as a bearer token and needs no login. Each key is revoked on its own, so revoking one changes nothing else.
+An agent key lets a program or an AI agent call DDBD as you, without your password. You make the key with [`createAgentKey`](/api-reference/agent-keys#createagentkey), give it the limits you want, and hand the `dk_...` string to the agent, which sends it as a bearer token and needs no login. Each key is revoked on its own, so revoking one changes nothing else.
 
 A key can be:
 
@@ -19,7 +19,7 @@ Every record the key writes carries the key's id and name in its `agent` field, 
 `createAgentKey` needs a password session: call it with a session token from [`login`](/users/login), never with another agent key. The example makes a read-only key for the `products` collection, capped at level `05`, valid for 30 days.
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group

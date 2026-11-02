@@ -12,8 +12,8 @@ import PerfSection from './PerfSection.vue'
 // the postRecord body of the example the key diagram plays now
 const ex = computed(() => EXAMPLES[current.value])
 const dataPairs = computed(() => Object.entries(ex.value.data))
-const INSTALL = 'curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh'
-const BREW = 'brew install broadwayinc/tap/dadabada'
+const INSTALL = 'curl -fsSL https://cdn.broadwayinc.com/get/ddbd/v1 | sh'
+const BREW = 'brew install broadwayinc/ddbd/ddbd'
 
 const access = [
   { t: 'Access levels', link: '/database/access-levels.html', d: 'Every user has an access\u00a0level from 00\u00a0to\u00a099, set by the admin. A record saved at access\u00a0level\u00a005 can be read by users at\u00a005 and above. Nobody saves above their own access\u00a0level.' },
@@ -26,7 +26,7 @@ const access = [
 const solution = [
   {
     t: 'Truly serverless',
-    d: 'Your app needs no backend of its own to guard its data. Browsers and serverless functions call DADABADA directly, and the database checks each record\u2019s rules itself.',
+    d: 'Your app needs no backend of its own to guard its data. Browsers and serverless functions call DDBD directly, and the database checks each record\u2019s rules itself.',
   },
   {
     t: 'Safer AI agents',
@@ -52,10 +52,10 @@ const steps = [
     t: 'Install', cmd: INSTALL, comment: 'Linux', note: 'x86_64 or arm64, glibc\u00a02.34 or newer. Puts ddbd in /usr/local/bin, or in ~/.local/bin without sudo.',
     alt: BREW, altComment: 'macOS 11 or newer, Apple Silicon or Intel',
   },
-  { t: 'Create a data folder', cmd: 'ddbd init --data ~/dadabada-data' },
-  { t: 'Start the server', cmd: 'ddbd start --data ~/dadabada-data', note: 'Answers on http://localhost:7070.' },
+  { t: 'Create a data folder', cmd: 'ddbd init --data ~/ddbd-data' },
+  { t: 'Start the server', cmd: 'ddbd start --data ~/ddbd-data', note: 'Answers on http://localhost:7070.' },
   // the last step's follow-up is the one people miss, so it is body text, not a small grey note
-  { t: 'Turn on the web admin', cmd: 'ddbd admin --data ~/dadabada-data web-password', open: 'http://localhost:7070', then: 'and add your first user.' },
+  { t: 'Turn on the web admin', cmd: 'ddbd admin --data ~/ddbd-data web-password', open: 'http://localhost:7070', then: 'and add your first user.' },
 ]
 </script>
 
@@ -66,13 +66,13 @@ const steps = [
       <div class="wrap hero-grid">
         <div class="hero-text">
           <p class="eyebrow">Open source database&nbsp;· <span class="nw">Apache-2.0</span></p>
-          <h1 class="name">DADABADA</h1>
+          <h1 class="name">DDBD</h1>
           <p class="lead">Schemaless record database with <span class="nw">writer-based</span> access control&nbsp;(WBAC).</p>
           <p class="sub">Let your agents work on your data without an admin in the loop.</p>
           <CmdLine class="hero-cmd" :cmd="INSTALL" />
           <div class="actions">
             <a class="btn brand" href="/introduction/getting-started.html">Get started</a>
-            <a class="btn alt" href="/introduction/what-is-dadabada.html">What is DADABADA?</a>
+            <a class="btn alt" href="/introduction/what-is-ddbd.html">What is DDBD?</a>
           </div>
           <ul class="hero-facts">
             <li>Linux and&nbsp;macOS</li>
@@ -96,9 +96,9 @@ const steps = [
           <div>
             <h2>No server in the&nbsp;middle</h2>
             <p>With <span class="nw">writer-based</span> access control&nbsp;(WBAC), the client that writes a record
-              decides who may read it, and DADABADA enforces that on every request. The access rules live with the
+              decides who may read it, and DDBD enforces that on every request. The access rules live with the
               data, inside the database.</p>
-            <p>So browsers, serverless functions and AI agents talk to DADABADA directly over HTTP, each with its
+            <p>So browsers, serverless functions and AI agents talk to DDBD directly over HTTP, each with its
               own sign-in. Clients get full control of their data, and there is no backend to write, host or scale
               just to guard it.</p>
           </div>
@@ -123,7 +123,7 @@ const steps = [
           <div>
             <h2>No schema, JSON store</h2>
             <p>There is no schema and no index to set up. With each record, the user who saves it names its collection,
-              access level, tags and indexes. DADABADA turns those into sorted keys and writes them together with the
+              access level, tags and indexes. DDBD turns those into sorted keys and writes them together with the
               record in one atomic step.</p>
             <p>A query reads one range of those keys for each access level the reader may read, merged in order. It starts at
               the first match and stops when the page is full, so its cost follows the page, not the size of the
@@ -153,7 +153,7 @@ const steps = [
       <div class="wrap">
         <p class="num">02 · Access</p>
         <h2>Access rules belong to each record</h2>
-        <p class="intro">The user who writes a record decides who can read it, and DADABADA checks it on every read.
+        <p class="intro">The user who writes a record decides who can read it, and DDBD checks it on every read.
           There are no access policies for an admin to write or keep up to date.</p>
         <div class="cards four">
           <a v-for="c in access" :key="c.t" class="card" :href="c.link">
@@ -211,7 +211,7 @@ const steps = [
             <h2>Data the admin cannot read</h2>
             <p>Access levels decide who can fetch a record. For data that must stay secret even from the admin and from
               backups, the app encrypts it before saving.</p>
-            <p>DADABADA gives every user a salt and the settings to derive a key from their password with Argon2id. The
+            <p>DDBD gives every user a salt and the settings to derive a key from their password with Argon2id. The
               key is made and used on the user's device, the same on every device they sign in on. The server stores
               only the result.</p>
             <a class="more" href="/users/encryption.html">Client-side encryption</a>
@@ -249,7 +249,7 @@ const steps = [
           <div>
             <p>The web admin comes with the server, on the same address and port as the API. See every record, run any
               query, add users and agent keys, change settings, take backups, and stop or restart the server.</p>
-            <p>It stays off until the operating system user who runs DADABADA sets its password on the server. Nobody
+            <p>It stays off until the operating system user who runs DDBD sets its password on the server. Nobody
               can turn it on from the outside.</p>
             <a class="more" href="/admin/web-admin.html">Web admin</a>
           </div>
@@ -278,7 +278,7 @@ const steps = [
             </div>
           </li>
         </ol>
-        <p class="after">DADABADA speaks plain HTTP by default: run it behind HTTPS, or set it up with
+        <p class="after">DDBD speaks plain HTTP by default: run it behind HTTPS, or set it up with
           <code>--tls</code>. <a href="/introduction/getting-started.html">Getting started</a> walks through the first
           user, record and query.</p>
       </div>
@@ -292,7 +292,7 @@ const steps = [
           <h2>The database design behind Skapi</h2>
         </div>
         <div>
-          <p>skapi.com is built on the Dadabada record design. It serves developers worldwide and handles rapidly growing traffic from AI agents.</p>
+          <p>skapi.com is built on the DDBD record design. It serves developers worldwide and handles rapidly growing traffic from AI agents.</p>
           <a class="more inv" href="https://www.skapi.com" target="_blank" rel="noopener">skapi.com</a>
         </div>
       </div>
@@ -302,10 +302,10 @@ const steps = [
     <section class="sec end">
       <div class="wrap end-box">
         <h2>Free and open source</h2>
-        <p>DADABADA is licensed under <span class="nw">Apache-2.0</span>. Use it, read it, change it.</p>
+        <p>DDBD is licensed under <span class="nw">Apache-2.0</span>. Use it, read it, change it.</p>
         <div class="actions center">
           <a class="btn brand" href="/introduction/getting-started.html">Get started</a>
-          <a class="btn alt" href="/introduction/what-is-dadabada.html">Read the docs</a>
+          <a class="btn alt" href="/introduction/what-is-ddbd.html">Read the docs</a>
         </div>
       </div>
     </section>

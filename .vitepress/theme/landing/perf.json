@@ -1,6 +1,6 @@
 {
  "engines": {
-  "dd": "DADABADA 0.1.2",
+  "dd": "DDBD 0.1.2",
   "pg": "PostgreSQL 16.2",
   "lite": "SQLite 3.46.0",
   "mongo": "MongoDB 8.0.4"

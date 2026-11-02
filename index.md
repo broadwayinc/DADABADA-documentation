@@ -1,6 +1,6 @@
 ---
-layout: DadabadaLanding
+layout: DdbdLanding
 sidebar: false
-title: DADABADA
+title: DDBD
 titleTemplate: Schemaless record database with writer-based access control
 ---

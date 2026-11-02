@@ -1,6 +1,6 @@
 # Client-Side Encryption
 
-This page shows how to encrypt a record's `data` on the client with a key derived from the user's password. DADABADA stores the `data` of a record as plain JSON and never encrypts it: the admin, a backup and an export all contain the data in the clear. When a record holds something only its owner should read, encrypt the data on the client before [`postRecord`](/api-reference/database#postrecord) and decrypt it after [`getRecords`](/api-reference/database#getrecords). The server keeps a salt for each account and tells the client which key-derivation settings to use, so every device the user signs in on derives the same key.
+This page shows how to encrypt a record's `data` on the client with a key derived from the user's password. DDBD stores the `data` of a record as plain JSON and never encrypts it: the admin, a backup and an export all contain the data in the clear. When a record holds something only its owner should read, encrypt the data on the client before [`postRecord`](/api-reference/database#postrecord) and decrypt it after [`getRecords`](/api-reference/database#getrecords). The server keeps a salt for each account and tells the client which key-derivation settings to use, so every device the user signs in on derives the same key.
 
 ## Where the key comes from
 
@@ -82,7 +82,7 @@ async function decrypt(key, enc) {
 The record below keeps its searchable parts in the clear (`kind` as an index, `2026` as a tag) and the secret in `data`.
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -234,7 +234,7 @@ carol> get diary --tag 2026
 ## Good to know
 
 - The same key works on every device because `enc_salt` is per account and never changes. An export (see [Operations](/admin/operations#export-file-format)) carries `enc_salt` with each user, so data stays decryptable after an import.
-- A record is readable by every user its access level allows (see [Access levels](/database/access-levels)), but only someone with the derived key can decrypt its `data`. Sharing an encrypted record with another user means sharing the key out of band; DADABADA has no key exchange.
+- A record is readable by every user its access level allows (see [Access levels](/database/access-levels)), but only someone with the derived key can decrypt its `data`. Sharing an encrypted record with another user means sharing the key out of band; DDBD has no key exchange.
 - An [agent key](/users/agent-keys) gets `enc_salt` and `kdf` from `whoami` like a session does, but it has no password, so an agent cannot derive the key on its own. Give the agent the derived key, or keep encrypted collections away from agents with `collections`.
 - `data` has no size limit and can be any JSON, so the encrypted object can hold anything the plain object held.
 - Records saved by the [Web Admin](/admin/web-admin) or brought in by an import are stored in the clear, like any other record; encrypt before the data reaches the server.

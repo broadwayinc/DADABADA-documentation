@@ -1,6 +1,6 @@
 # Getting Started
 
-This page takes you from an empty machine to a running DADABADA with a user and a first record, in order. Do the steps one after another; each one uses the result of the one before.
+This page takes you from an empty machine to a running DDBD with a user and a first record, in order. Do the steps one after another; each one uses the result of the one before.
 
 ::: info How to read the commands on this page
 - A line that starts with `$` is a command: type what comes after the `$`, not the `$` itself. The copy button on each box copies the commands without the `$`.
@@ -10,25 +10,25 @@ This page takes you from an empty machine to a running DADABADA with a user and 
 - The examples use `localhost`, which works when you type them on the server itself. From another computer, use the server's address instead.
 :::
 
-## 1. Install DADABADA
+## 1. Install DDBD
 
-DADABADA runs on Linux and on macOS. Install it on the machine that will run the database.
+DDBD runs on Linux and on macOS. Install it on the machine that will run the database.
 
 **Linux**, on x86_64 or arm64 processors, with glibc 2.34 or newer: for example Ubuntu 22.04 or 24.04, Debian 12, RHEL 9 or Amazon Linux 2023.
 
 ```bash
-$ curl -fsSL https://cdn.broadwayinc.com/get/dadabada/v1 | sh
+$ curl -fsSL https://cdn.broadwayinc.com/get/ddbd/v1 | sh
 ```
 
-The installer downloads DADABADA, checks the download, and puts the `ddbd` program in `/usr/local/bin`, so you can run it from any folder. Writing there needs administrator rights, so it may ask for your password once. Without sudo, it installs into `~/.local/bin` instead and tells you how to add that folder to your `PATH`. The license files go next to it, in `/usr/local/share/doc/dadabada`.
+The installer downloads DDBD, checks the download, and puts the `ddbd` program in `/usr/local/bin`, so you can run it from any folder. Writing there needs administrator rights, so it may ask for your password once. Without sudo, it installs into `~/.local/bin` instead and tells you how to add that folder to your `PATH`. The license files go next to it, in `/usr/local/share/doc/ddbd`.
 
 **macOS** 11 or newer, on Apple Silicon or Intel, with [Homebrew](https://brew.sh).
 
 ```bash
-$ brew install broadwayinc/tap/dadabada
+$ brew install broadwayinc/ddbd/ddbd
 ```
 
-Homebrew downloads DADABADA, checks the download, and puts `ddbd` with its other programs (`/opt/homebrew/bin` on Apple Silicon, `/usr/local/bin` on Intel), which are already on your `PATH`. It also sets up a data folder of its own, for running DADABADA in the background ([Running as a service](/admin/operations#running-as-a-service)). That one uses the same port, 7070, so leave it stopped while you follow this page.
+Homebrew downloads DDBD, checks the download, and puts `ddbd` with its other programs (`/opt/homebrew/bin` on Apple Silicon, `/usr/local/bin` on Intel), which are already on your `PATH`. It also sets up a data folder of its own, for running DDBD in the background ([Running as a service](/admin/operations#running-as-a-service)). That one uses the same port, 7070, so leave it stopped while you follow this page.
 
 Check that it worked:
 
@@ -40,51 +40,51 @@ $ ddbd version
 ddbd x.x.x
 ```
 
-Running the same install command again later updates DADABADA to the newest version; with Homebrew, `brew upgrade dadabada` does. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
+Running the same install command again later updates DDBD to the newest version; with Homebrew, `brew upgrade ddbd` does. Installing a specific version, into another folder, or by hand without the script is described in [Installing, upgrading and removing](/admin/operations#installing-upgrading-and-removing).
 
 ## 2. Create a data folder
 
 A data folder holds one database: its records, users, settings and certificate. Create it once:
 
 ```bash
-$ ddbd init --data ~/dadabada-data
+$ ddbd init --data ~/ddbd-data
 ```
 
 ```
-Created data folder /home/ubuntu/dadabada-data (owner: ubuntu, mode 0700)
-Saved settings to /home/ubuntu/dadabada-data/dadabada.toml
-TLS is off: DADABADA speaks plain HTTP, so passwords and data travel unencrypted.
+Created data folder /home/ubuntu/ddbd-data (owner: ubuntu, mode 0700)
+Saved settings to /home/ubuntu/ddbd-data/ddbd.toml
+TLS is off: DDBD speaks plain HTTP, so passwords and data travel unencrypted.
 Run it behind HTTPS (a load balancer or proxy that serves HTTPS), or set it up with --tls.
-Next: ddbd start --data /home/ubuntu/dadabada-data
-Then add a user: ddbd admin --data /home/ubuntu/dadabada-data user add <name> --level 00
+Next: ddbd start --data /home/ubuntu/ddbd-data
+Then add a user: ddbd admin --data /home/ubuntu/ddbd-data user add <name> --level 00
 ```
 
 `init` creates the folder if it does not exist, including any missing parent folders, and makes it readable only by you. Pick any folder you can write to. If the folder is already set up, `init` changes nothing and says so:
 
 ```
-/home/ubuntu/dadabada-data is already set up. Start it with: ddbd start --data /home/ubuntu/dadabada-data
+/home/ubuntu/ddbd-data is already set up. Start it with: ddbd start --data /home/ubuntu/ddbd-data
 ```
 
 The options of `init`:
 
 | option | if you leave it out | what it sets |
 |---|---|---|
-| `--data <folder>` | `./dadabada-data` in the current folder | where the database lives. Every later command takes the same `--data` |
+| `--data <folder>` | `./ddbd-data` in the current folder | where the database lives. Every later command takes the same `--data` |
 | `--port <port>` | `7070` | the port the server listens on |
 | `--bind <address>` | `0.0.0.0` | which network address it listens on: `0.0.0.0` is every address, `127.0.0.1` is this machine only |
-| `--tls` | plain HTTP | DADABADA serves HTTPS itself, with a self-signed certificate made now (see below) |
+| `--tls` | plain HTTP | DDBD serves HTTPS itself, with a self-signed certificate made now (see below) |
 
 ### HTTPS
 
-::: warning Run DADABADA behind HTTPS
-By default DADABADA speaks plain HTTP: passwords, tokens and records travel unencrypted, and anyone on the network path can read them. Plain HTTP is fine for trying DADABADA on your own machine at `localhost`. Anywhere else, use HTTPS in one of the two ways below.
+::: warning Run DDBD behind HTTPS
+By default DDBD speaks plain HTTP: passwords, tokens and records travel unencrypted, and anyone on the network path can read them. Plain HTTP is fine for trying DDBD on your own machine at `localhost`. Anywhere else, use HTTPS in one of the two ways below.
 :::
 
-- **A load balancer or proxy serves HTTPS** (the usual setup). It holds the certificate for your domain and forwards requests to DADABADA as plain HTTP. Keep the default, without `--tls`, and let only the load balancer reach DADABADA's port.
-- **DADABADA serves HTTPS itself.** Add `--tls` when you create the folder:
+- **A load balancer or proxy serves HTTPS** (the usual setup). It holds the certificate for your domain and forwards requests to DDBD as plain HTTP. Keep the default, without `--tls`, and let only the load balancer reach DDBD's port.
+- **DDBD serves HTTPS itself.** Add `--tls` when you create the folder:
 
 ```bash
-$ ddbd init --data ~/dadabada-data --tls
+$ ddbd init --data ~/ddbd-data --tls
 ```
 
 `--tls` makes a self-signed certificate. Browsers warn about it, and curl needs `-k`, until you replace it with a certificate from a certificate authority (Settings page, `tls_cert` and `tls_key`).
@@ -94,27 +94,27 @@ With TLS off, `https://` requests to the port fail; with TLS on, plain `http://`
 ## 3. Start the server
 
 ```bash
-$ ddbd start --data ~/dadabada-data
+$ ddbd start --data ~/ddbd-data
 ```
 
 ```
-DADABADA 0.1.4  (schemaless, lexicographic, single binary)
-  data     /home/ubuntu/dadabada-data
+DDBD 0.2.0  (schemaless, lexicographic, single binary)
+  data     /home/ubuntu/ddbd-data
   network  0.0.0.0:7070 (plain HTTP)
-  admin    /home/ubuntu/dadabada-data/admin.sock (only OS user ubuntu)
+  admin    /home/ubuntu/ddbd-data/admin.sock (only OS user ubuntu)
   limits   indexes per record: unlimited · tags per record: unlimited · notifications kept 1d · private keys last 1h
   users 0 · records 0 · collections 0
-19:49:12  Ready. DADABADA 0.1.4 on 0.0.0.0:7070 (plain HTTP)
+19:49:12  Ready. DDBD 0.2.0 on 0.0.0.0:7070 (plain HTTP)
 ```
 
-The server runs in this terminal and prints a line for every request. Leave it running and open a **second terminal** for the next steps. To stop it, press Ctrl-C here, or run `ddbd stop --data ~/dadabada-data` from another terminal.
+The server runs in this terminal and prints a line for every request. Leave it running and open a **second terminal** for the next steps. To stop it, press Ctrl-C here, or run `ddbd stop --data ~/ddbd-data` from another terminal.
 
 ## 4. Open the web admin
 
-The web admin is a page served by DADABADA itself, for you as the administrator. Turn it on by giving it a password, in the second terminal:
+The web admin is a page served by DDBD itself, for you as the administrator. Turn it on by giving it a password, in the second terminal:
 
 ```bash
-$ ddbd admin --data ~/dadabada-data web-password
+$ ddbd admin --data ~/ddbd-data web-password
 ```
 
 ```
@@ -122,7 +122,7 @@ New web admin password (shown as you type, at least 8 characters): demo-admin-pa
 Web admin is on. Open the server address in a browser and sign in with this password. Existing web admin sessions were signed out.
 ```
 
-Only the operating system user who runs DADABADA can set this password; nobody can set or change it over the network.
+Only the operating system user who runs DDBD can set this password; nobody can set or change it over the network.
 
 Open `http://localhost:7070/` in a browser on the server itself. From another computer, open the HTTPS address that leads to it, for example your load balancer's `https://<server address>/`. (With `--tls`, the address is `https://<server address>:7070/`, and the browser first warns about the self-signed certificate: choose **Advanced**, then **Proceed**.) Sign in with the password you just set:
 
@@ -202,7 +202,7 @@ The answer:
     "records": 0,
     "subscribed": 0,
     "subscribers": 0,
-    "user_id": "0335gAh7",
+    "user_id": "POsNqsDQ",
     "username": "alice"
   }
 }
@@ -277,7 +277,7 @@ print(json.load(urllib.request.urlopen(req)))
 
 ```text [User shell]
 alice> post products --level 05 --index price=1200 --index "title=Desk Lamp" --tags sale,lighting --data '{"title":"Desk Lamp","color":"red"}'
-Saved record VZYu6838aXfUbNn3
+Saved record VZoQU2VISdszI4a9
 ```
 
 :::
@@ -332,7 +332,7 @@ The answer is the saved record:
   ],
   "ip": "127.0.0.1",
   "readonly": false,
-  "record_id": "VZYu6838aXfUbNn3",
+  "record_id": "VZoQU2VISdszI4a9",
   "reference": null,
   "referenced_count": 0,
   "source": {
@@ -350,11 +350,11 @@ The answer is the saved record:
   "unique_id": null,
   "updated": 1793387717579,
   "uploaded": 1793387717579,
-  "user_id": "0335gAh7"
+  "user_id": "POsNqsDQ"
 }
 ```
 
-The new record's id is `record_id`: `VZYu6838aXfUbNn3`. Every option of the request is in [Creating records](/database/create).
+The new record's id is `record_id`: `VZoQU2VISdszI4a9`. Every option of the request is in [Creating records](/database/create).
 
 ## 8. See the record in the web admin
 
@@ -404,7 +404,7 @@ print(json.load(urllib.request.urlopen(req)))
 
 ```text [User shell]
 alice> get products --index "price >= 1000"
-VZYu6838aXfUbNn3  products/05  [price=1200 title="Desk Lamp"]  tags:sale,lighting  {"color":"red","title":"Desk Lamp"}
+VZoQU2VISdszI4a9  products/05  [price=1200 title="Desk Lamp"]  tags:sale,lighting  {"color":"red","title":"Desk Lamp"}
 ```
 
 :::
@@ -444,7 +444,7 @@ The answer is a page of records. `end_of_list: true` means there are no more:
       ],
       "ip": "127.0.0.1",
       "readonly": false,
-      "record_id": "VZYu6838aXfUbNn3",
+      "record_id": "VZoQU2VISdszI4a9",
       "reference": null,
       "referenced_count": 0,
       "source": {
@@ -462,7 +462,7 @@ The answer is a page of records. `end_of_list: true` means there are no more:
       "unique_id": null,
       "updated": 1793387717579,
       "uploaded": 1793387717579,
-      "user_id": "0335gAh7"
+      "user_id": "POsNqsDQ"
     }
   ],
   "start_key": "end"
@@ -476,18 +476,18 @@ A few other queries to try, as the `-d` body:
 | `{"query": {"collection": "products", "tag": "sale"}}` | records tagged `sale` |
 | `{"query": {"collection": "products", "index": {"name": "title", "value": "Desk", "condition": ">="}}}` | titles that start with `Desk` |
 | `{"query": {"collection": "products", "index": {"name": "title", "value": "desk lamp", "match": "loose"}}}` | the same record, ignoring case and spacing |
-| `{"query": {"record_id": "VZYu6838aXfUbNn3"}}` | one record by its id |
+| `{"query": {"record_id": "VZoQU2VISdszI4a9"}}` | one record by its id |
 
 ## 10. Stop the server
 
-When you are done, stop DADABADA. In the terminal where it runs, press **Ctrl-C**. Or, from any other terminal:
+When you are done, stop DDBD. In the terminal where it runs, press **Ctrl-C**. Or, from any other terminal:
 
 ```bash
-$ ddbd stop --data ~/dadabada-data
+$ ddbd stop --data ~/ddbd-data
 ```
 
 ```
-Stopping DADABADA (pid 251722): it finishes the requests in progress first...
+Stopping DDBD (pid 251722): it finishes the requests in progress first...
 Stopped.
 ```
 
@@ -498,4 +498,4 @@ Stopping: refusing new requests, finishing the ones in progress...
 Stopped.
 ```
 
-Everything you saved stays in `~/dadabada-data`. To continue later, start it again with `ddbd start --data ~/dadabada-data`; alice, her record and the web admin password are all still there.
+Everything you saved stays in `~/ddbd-data`. To continue later, start it again with `ddbd start --data ~/ddbd-data`; alice, her record and the web admin password are all still there.

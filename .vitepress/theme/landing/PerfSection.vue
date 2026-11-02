@@ -6,7 +6,7 @@ import perf from './perf.json'
 // for the share of records the caller may read that is picked above it.
 type Key = 'dd' | 'pg' | 'lite' | 'mongo'
 const SERIES: { key: Key; name: string; short: string }[] = [
-  { key: 'dd', name: perf.engines.dd, short: 'DADABADA' },
+  { key: 'dd', name: perf.engines.dd, short: 'DDBD' },
   { key: 'pg', name: perf.engines.pg, short: 'PostgreSQL' },
   { key: 'lite', name: perf.engines.lite, short: 'SQLite' },
   { key: 'mongo', name: perf.engines.mongo, short: 'MongoDB' },
@@ -25,7 +25,7 @@ const fmt = (v: number) => (v >= 100 ? v.toFixed(0) : v >= 1 ? v.toFixed(1) : v.
 // one decimal below 10x, so a ratio is never rounded up into a bigger claim
 const ratio = (a: number, b: number) => (b / a >= 10 ? `${Math.round(b / a)}×` : `${(b / a).toFixed(1)}×`)
 const joinList = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`)
-// the line under the tiles: DADABADA against each other database, whichever way round it went
+// the line under the tiles: DDBD against each other database, whichever way round it went
 const footSlower = computed(() => SERIES.filter((s) => s.key !== 'dd' && at1m.value[s.key] > at1m.value.dd))
 const footFaster = computed(() => SERIES.filter((s) => s.key !== 'dd' && at1m.value[s.key] <= at1m.value.dd))
 
@@ -86,7 +86,7 @@ const hover = ref<number | null>(null)
     <div class="wrap">
       <p class="num">05 · Performance</p>
       <h2>Query time grows with the answer, not with the database</h2>
-      <p class="intro">How long DADABADA, PostgreSQL, SQLite and MongoDB take to answer the same query as more records
+      <p class="intro">How long DDBD, PostgreSQL, SQLite and MongoDB take to answer the same query as more records
         are stored.</p>
 
       <div class="filter" role="group" aria-label="Query to be fetched by share of the records">
@@ -105,10 +105,10 @@ const hover = ref<number | null>(null)
             <span class="tile-val">{{ fmt(at1m[s.key]) }} <small>ms</small></span>
           </div>
           <p class="tiles-foot">
-            <template v-if="footSlower.length">DADABADA answered
+            <template v-if="footSlower.length">DDBD answered
               {{ joinList(footSlower.map((s) => `${ratio(at1m.dd, at1m[s.key])}\u00a0faster than ${s.short}`)) }}.</template>
             <template v-for="s in footFaster" :key="s.key">{{ (footSlower.length ? ' ' : '') + s.short }} answered
-              {{ ratio(at1m[s.key], at1m.dd) }}&nbsp;faster than DADABADA.</template>
+              {{ ratio(at1m[s.key], at1m.dd) }}&nbsp;faster than DDBD.</template>
           </p>
         </div>
 
@@ -158,7 +158,7 @@ const hover = ref<number | null>(null)
         <div class="tbl-wrap">
           <table>
             <thead>
-              <tr><th>Query</th><th>Caller may read</th><th>Records returned</th><th>DADABADA</th><th>PostgreSQL</th><th>SQLite</th><th>MongoDB</th></tr>
+              <tr><th>Query</th><th>Caller may read</th><th>Records returned</th><th>DDBD</th><th>PostgreSQL</th><th>SQLite</th><th>MongoDB</th></tr>
             </thead>
             <tbody>
               <tr v-for="r in perf.table" :key="r.kind + r.level">
@@ -174,12 +174,12 @@ const hover = ref<number | null>(null)
           </table>
         </div>
         <p class="tbl-note">Without a tag, an index on price alone serves the query well once the user may read
-          10% or more of the records, and PostgreSQL and SQLite answer faster than DADABADA. With a tag, a
+          10% or more of the records, and PostgreSQL and SQLite answer faster than DDBD. With a tag, a
           SQL database has to combine the tag index, the price order and the access filter at query time;
-          DADABADA wrote a key that already holds all three when the record was saved. When the user may read every
+          DDBD wrote a key that already holds all three when the record was saved. When the user may read every
           record there is no access filter to combine, and PostgreSQL answers the tag query faster.
           MongoDB combines its indexes at query time as the SQL databases do, so it slows down with the tag and the
-          access filter too; without them, when the user may read every record, it is faster than DADABADA.</p>
+          access filter too; without them, when the user may read every record, it is faster than DDBD.</p>
       </details>
 
       <details class="numbers">
@@ -194,16 +194,16 @@ const hover = ref<number | null>(null)
           <li><b>The same request for all four:</b> every query is the same HTTP <code>POST</code> with a JSON
             body and a session token, and every answer is the 50&nbsp;full records as JSON, the same bytes from each
             database. PostgreSQL, SQLite and MongoDB answer through a small HTTP server written for this test with
-            the same libraries as DADABADA's (hyper, tokio, serde_json). Like DADABADA, it reads the token, looks up
+            the same libraries as DDBD's (hyper, tokio, serde_json). Like DDBD, it reads the token, looks up
             the user's access level, runs the query and writes the JSON answer.</li>
-          <li><b>DADABADA {{ perf.engines.dd.split(' ')[1] }}:</b> default settings; <code>getRecords</code>.</li>
+          <li><b>DDBD {{ perf.engines.dd.split(' ')[1] }}:</b> default settings; <code>getRecords</code>.</li>
           <li><b>{{ perf.engines.pg }}:</b> one table with the record id, collection, access level, price, tags and
             the record JSON; indexes on (collection, price, id), (collection, access level, price, id) and a GIN index
             on tags.
             2&nbsp;GB shared buffers, JIT off, a plan for each query's values. Its own process, reached by the HTTP
             server over its local socket, as any application reaches it.</li>
           <li><b>{{ perf.engines.lite }}:</b> the same table and two indexes, with the tags in their own indexed
-            table; 2&nbsp;GB page cache. Runs inside the HTTP server's process, as RocksDB runs inside DADABADA's.</li>
+            table; 2&nbsp;GB page cache. Runs inside the HTTP server's process, as RocksDB runs inside DDBD's.</li>
           <li><b>{{ perf.engines.mongo }}:</b> one document per record with the record id, collection, access level,
             price, tags and the record itself; the same indexes as PostgreSQL: (collection, price, id), (collection,
             access level, price, id) and tags. 2&nbsp;GB cache. Its own process, reached by the HTTP server over its local
@@ -214,7 +214,7 @@ const hover = ref<number | null>(null)
             The whole set was run {{ perf.repeats }}&nbsp;times; each number is the median of the runs' medians, because
             the laptop's speed changed by up to a third from one run to the next. All four returned the same records
             in the same order for every query.</li>
-          <li><b>Settled databases:</b> after loading, DADABADA was restarted and left idle until its storage engine
+          <li><b>Settled databases:</b> after loading, DDBD was restarted and left idle until its storage engine
             had finished sorting the new data into place, and PostgreSQL was checkpointed and analyzed, so no
             database was still busy with its load while it answered.</li>
         </ul>

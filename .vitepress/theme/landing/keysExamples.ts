@@ -3,7 +3,7 @@ import { ref } from 'vue'
 // The examples of the "No schema, JSON store" section: the postRecord body in the code block and the
 // key list in KeysDiagram show the same example at the same time. KeysDiagram moves `current` on.
 //
-// Each example shows one sorted list of keys (access level, tag, index value, as DADABADA sorts them) with
+// Each example shows one sorted list of keys (access level, tag, index value, as DDBD sorts them) with
 // every record in it once: the record saved gets one key, and the query reads one range of the list.
 
 export type KeyRow = { lvl: string; tag: string; val: string; id: string; fresh?: true }

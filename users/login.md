@@ -2,7 +2,7 @@
 
 This page covers signing in, sending the session token, how long a session lasts, `whoami`, `logout`, the failed-login slowdown and lost passwords.
 
-Every request to DADABADA needs an account, and there is no sign-up: the admin adds each user on the server, with `user add` in the [Admin Shell](/admin/admin-shell#users) or on the Users page of the [Web Admin](/admin/web-admin), and chooses the username, the password and the access level. The user signs in with [`login`](/api-reference/connection#login), gets a session token, and sends that token on every other call.
+Every request to DDBD needs an account, and there is no sign-up: the admin adds each user on the server, with `user add` in the [Admin Shell](/admin/admin-shell#users) or on the Users page of the [Web Admin](/admin/web-admin), and chooses the username, the password and the access level. The user signs in with [`login`](/api-reference/connection#login), gets a session token, and sends that token on every other call.
 
 Agents and scripts should not sign in with a password at all. Give them an [agent key](/users/agent-keys) instead: it is sent the same way as a session token and needs no login.
 
@@ -102,7 +102,7 @@ A server set up with `init --tls` uses a self-signed TLS certificate. Have your 
 Every other call carries the token in the header `Authorization: Bearer <token>`, with `<token>` replaced by the whole `s_...` string (`bearer` in lower case works too). The token as `?token=<token>` in the address works only on `GET /v1/listen`, for a browser `EventSource`, which cannot set headers. On any other call `?token=` is ignored, and a call without the header answers `401 UNAUTHORIZED` `Sign in first: send Authorization: Bearer <session token or agent key>.` Here [`whoami`](/api-reference/connection#whoami) is called with the token from the login above.
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -269,7 +269,7 @@ Only the token sent is ended. A user signed in on two devices stays signed in on
 
 ## Failed-login slowdown
 
-DADABADA slows down password guessing. Failed sign-ins are counted per username and per client address, and the longer of the two waits applies. Web Admin sign-ins count toward the same per-address count.
+DDBD slows down password guessing. Failed sign-ins are counted per username and per client address, and the longer of the two waits applies. Web Admin sign-ins count toward the same per-address count.
 
 | setting | default | meaning |
 |---|---|---|

@@ -1,15 +1,15 @@
 # Database
 
-DADABADA stores records: JSON values that apps, scripts and AI agents save and find through the API. There are no tables to create and no schema to declare. The user who saves a record decides where it goes, who can read it and how it can be found, and the database is ready to answer queries on it at once.
+DDBD stores records: JSON values that apps, scripts and AI agents save and find through the API. There are no tables to create and no schema to declare. The user who saves a record decides where it goes, who can read it and how it can be found, and the database is ready to answer queries on it at once.
 
 ## What a record looks like
 
-A record is the JSON you saved (`data`) with the settings around it. This is a record as DADABADA answers it, shortened to the main fields:
+A record is the JSON you saved (`data`) with the settings around it. This is a record as DDBD answers it, shortened to the main fields:
 
 ```json
 {
-  "record_id": "VZYu6838aXfUbNn3",
-  "user_id": "0335gAh7",
+  "record_id": "VZoQU2VISdszI4a9",
+  "user_id": "POsNqsDQ",
   "collection": { "name": "products", "access_level": "05" },
   "index": [
     { "name": "price", "value": 1200 },
@@ -24,7 +24,7 @@ A record is the JSON you saved (`data`) with the settings around it. This is a r
 }
 ```
 
-It is a product in the `products` collection, saved by user `0335gAh7`, readable by users at level `05` and above, and findable by price, by title and by its two tags. Every field is described in [Creating records](/database/create).
+It is a product in the `products` collection, saved by user `POsNqsDQ`, readable by users at level `05` and above, and findable by price, by title and by its two tags. Every field is described in [Creating records](/database/create).
 
 ## The words
 

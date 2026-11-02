@@ -40,6 +40,6 @@ export default {
   extends: DefaultTheme,
   enhanceApp({ app }) {
     // the home page: index.md names this component as its layout
-    app.component('DadabadaLanding', Landing)
+    app.component('DdbdLanding', Landing)
   },
 } satisfies Theme

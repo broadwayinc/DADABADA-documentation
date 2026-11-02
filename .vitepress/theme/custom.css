@@ -1,4 +1,4 @@
-/* Dadabada docs: the brand in monotone. Ink #111 on paper, JetBrains Mono, square corners,
+/* DDBD docs: the brand in monotone. Ink #111 on paper, JetBrains Mono, square corners,
    hard 2px offset shadows. VitePress's brand colour becomes ink (near-white in dark mode). */
 
 @font-face {
@@ -138,7 +138,7 @@
 .custom-block { border-left-width: 4px; }
 .custom-block .custom-block-title { font-weight: 600; }
 
-/* square corners and the hard shadow, the dadabada box language */
+/* square corners and the hard shadow, the ddbd box language */
 .VPButton, .vp-doc div[class*="language-"], .vp-code-group .tabs, .custom-block, .VPFeature, .vp-doc table, .VPNavBarSearch .DocSearch-Button, .VPLocalSearchBox .search-bar, .vp-doc .tabs {
   border-radius: 0 !important;
 }

@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: "DADABADA",
+  title: "DDBD",
   description: "Database for AI agents. Schemaless record database with writer-based access control (WBAC). Let your agents share one store without an admin in the loop.",
-  // Links end in .html: the site is served as plain files (S3 behind CloudFront at dadabada.skapi.com), which
+  // Links end in .html: the site is served as plain files (S3 behind CloudFront at ddbd.skapi.com), which
   // finds /guide.html but not /guide. With clean URLs, any page opened directly (a bookmark, a shared link, a
   // refresh) would show the 404 page. Turn this back on only where the host serves foo.html for /foo.
   cleanUrls: false,
@@ -22,8 +22,8 @@ export default defineConfig({
     ['script', {}, `(function(){var p=location.pathname;if(p!=='/'&&!/\\/$/.test(p)&&!/\\.[a-z0-9]+$/i.test(p))location.replace(p+'.html'+location.search+location.hash)})()`],
   ],
   themeConfig: {
-    logo: { light: '/logo.svg', dark: '/logo-dark.svg', alt: 'DADABADA' },
-    siteTitle: 'DADABADA',
+    logo: { light: '/logo.svg', dark: '/logo-dark.svg', alt: 'DDBD' },
+    siteTitle: 'DDBD',
     nav: [
       { text: 'Getting Started', link: '/introduction/getting-started', activeMatch: '^/introduction/' },
       { text: 'API Reference', link: '/api-reference/database', activeMatch: '^/api-reference/' },
@@ -33,7 +33,7 @@ export default defineConfig({
       {
         text: 'Introduction',
         items: [
-          { text: 'What is DADABADA?', link: '/introduction/what-is-dadabada' },
+          { text: 'What is DDBD?', link: '/introduction/what-is-ddbd' },
           { text: 'Getting started', link: '/introduction/getting-started' },
         ],
       },

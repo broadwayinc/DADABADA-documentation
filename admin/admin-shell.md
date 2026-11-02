@@ -1,13 +1,13 @@
 # Admin Shell
 
-The admin shell is the terminal tool of the operating system user who runs DADABADA. With it that user adds users and sets their access levels, reads and deletes any record, manages agent keys, backs up, exports and imports, and turns the Web Admin on or off. It reaches the server through a Unix socket in the data folder, never over the network, and no access level gives a network user these powers.
+The admin shell is the terminal tool of the operating system user who runs DDBD. With it that user adds users and sets their access levels, reads and deletes any record, manages agent keys, backs up, exports and imports, and turns the Web Admin on or off. It reaches the server through a Unix socket in the data folder, never over the network, and no access level gives a network user these powers.
 
 ```bash
-$ ddbd admin --data /srv/dadabada
+$ ddbd admin --data /srv/ddbd
 ```
 
 ```
-DADABADA admin shell. Type `help` for commands.
+DDBD admin shell. Type `help` for commands.
 ddbd admin> user add alice --level 10
 Password for alice: ...
 Added alice (user id DS4gIE0n, level 10).
@@ -30,10 +30,10 @@ Prompt: `ddbd admin>`. Options can be written with a space or with `=`: `--level
 There is no sign-up and no password reset: every account is made here (or on the Users page of the [Web Admin](/admin/web-admin)), and a user who lost the password gets a fresh account with `user del` and `user add`. See [Login and Sessions](/users/login).
 
 ```bash
-$ ddbd admin --data /srv/dadabada user add alice --level 10
-$ ddbd admin --data /srv/dadabada user list
-$ ddbd admin --data /srv/dadabada user level alice 20
-$ ddbd admin --data /srv/dadabada user del alice --yes
+$ ddbd admin --data /srv/ddbd user add alice --level 10
+$ ddbd admin --data /srv/ddbd user list
+$ ddbd admin --data /srv/ddbd user level alice 20
+$ ddbd admin --data /srv/ddbd user del alice --yes
 ```
 
 ## One command or the shell
@@ -48,7 +48,7 @@ $ ddbd admin --data /srv/dadabada user del alice --yes
 Both work only while the server runs. Put `--data` before the command. The shell talks to the server over a Unix socket, `admin.sock`, in the data folder (mode 0600), and the server answers only connections from the operating system user who started it. From another account, run it as that user:
 
 ```bash
-$ sudo -u dadabada ddbd admin --data /srv/dadabada status
+$ sudo -u ddbd ddbd admin --data /srv/ddbd status
 ```
 
 ::: warning
@@ -102,7 +102,7 @@ Users make and revoke their own keys over the API (see [Agent Keys](/users/agent
 | command | options | what it does |
 |---|---|---|
 | `status` | | version, data folder, port, TLS, counts (users, records, collections, sessions, connections, requests, listeners), outbox depth, limits in force, whether the Web Admin is on and its session count, loose-rule versions |
-| `backup <folder>` | | a consistent copy of the database while it runs. `<folder>` must not exist. A copy of the settings file is put inside as `dadabada.toml.copy` |
+| `backup <folder>` | | a consistent copy of the database while it runs. `<folder>` must not exist. A copy of the settings file is put inside as `ddbd.toml.copy` |
 | `secret rotate` | `--yes` skips the confirmation | makes a new server secret; every private access key stops working. Without `--yes` you must type `rotate` |
 | `rebuild-loose` | | rewrites every loose-match key with this build's rules |
 | `settings` | | the settings file path and every setting in force; a setting whose saved value differs is marked `(saved <value>, applies on next start)` |
@@ -112,11 +112,11 @@ Users make and revoke their own keys over the API (see [Agent Keys](/users/agent
 | `import <file>` | `--replace` (overwrite existing users and records), `--skip-existing` (the default) | loads an export. Reports counts, skipped and failed lines, and the first 20 failed lines with their line numbers |
 
 ```bash
-$ ddbd admin --data /srv/dadabada backup /srv/backups/dadabada-2026-10-29
-$ ddbd admin --data /srv/dadabada export /srv/exports/all.jsonl
-$ ddbd admin --data /srv/dadabada export /srv/exports/products.jsonl --collection products
-$ ddbd admin --data /srv/dadabada import /srv/exports/all.jsonl --replace
-$ ddbd admin --data /srv/dadabada web-password
+$ ddbd admin --data /srv/ddbd backup /srv/backups/ddbd-2026-10-29
+$ ddbd admin --data /srv/ddbd export /srv/exports/all.jsonl
+$ ddbd admin --data /srv/ddbd export /srv/exports/products.jsonl --collection products
+$ ddbd admin --data /srv/ddbd import /srv/exports/all.jsonl --replace
+$ ddbd admin --data /srv/ddbd web-password
 ```
 
 `backup`, `export` and `import` take paths on the server machine, and the server process reads or writes the files, so it needs permission there. `export` and `import` resolve a relative path against the folder the command is run in; `backup` passes `<folder>` to the server as written, so give it an absolute path. How to restore a backup, and the export file format, are on the [Operations](/admin/operations) page. Which settings apply at once and which wait for the next start is on the [Settings](/admin/settings) page.

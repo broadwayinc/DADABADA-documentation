@@ -1,9 +1,9 @@
 # Settings
 
-DADABADA reads its settings from `<data folder>/dadabada.toml`, which [`ddbd init`](/admin/command-line#ddbd-init) writes with every setting in it. This page lists every setting, when a change takes effect, and the fixed rules and limits that are not settings.
+DDBD reads its settings from `<data folder>/ddbd.toml`, which [`ddbd init`](/admin/command-line#ddbd-init) writes with every setting in it. This page lists every setting, when a change takes effect, and the fixed rules and limits that are not settings.
 
 ```toml
-# <data folder>/dadabada.toml (the first lines)
+# <data folder>/ddbd.toml (the first lines)
 port = 7070
 bind = "0.0.0.0"
 tls = false
@@ -16,7 +16,7 @@ session_idle_hours = 24
 |---|---|---|
 | `port` | `7070` | port |
 | `bind` | `"0.0.0.0"` | listen address (an IP address; `127.0.0.1` = this machine only) |
-| `tls` | `false` (`true` after `init --tls`) | TLS on or off. On: DADABADA serves HTTPS itself. Off: plain HTTP, for `localhost` or behind a proxy or load balancer that handles HTTPS and forwards plain HTTP (with TLS on, DADABADA refuses plain HTTP (see [Operations](/admin/operations#plain-http-on-a-tls-port)) |
+| `tls` | `false` (`true` after `init --tls`) | TLS on or off. On: DDBD serves HTTPS itself. Off: plain HTTP, for `localhost` or behind a proxy or load balancer that handles HTTPS and forwards plain HTTP (with TLS on, DDBD refuses plain HTTP (see [Operations](/admin/operations#plain-http-on-a-tls-port)) |
 | `tls_cert`, `tls_key` | the files made by `init --tls` | PEM certificate and key. `init --tls` writes the full paths of `<data folder>/tls/cert.pem` and `key.pem`; when a value is missing, those files are used. Any certificate (for example from a public certificate authority) can be used |
 | `session_idle_hours` | `24` | session ends after this many hours without use (at least 1) |
 | `notify_keep` | `"1d"` | keep missed notifications this long (`--notify-keep`) |
@@ -44,7 +44,7 @@ Where each setting is explained in use:
 
 ## Live or next start
 
-Edits to `dadabada.toml` take effect on the next `start`. The Web Admin's Settings page saves to the same file (rewriting it, so comments in it are lost), and applies what it can at once:
+Edits to `ddbd.toml` take effect on the next `start`. The Web Admin's Settings page saves to the same file (rewriting it, so comments in it are lost), and applies what it can at once:
 
 | applies at once (from the Web Admin) | applies on the next start |
 |---|---|
@@ -61,9 +61,9 @@ Every way to change a setting, and when it applies:
 
 | way | what it changes | when it applies |
 |---|---|---|
-| edit `<data folder>/dadabada.toml`, then restart (stop + `start`) | every setting | on the next start |
+| edit `<data folder>/ddbd.toml`, then restart (stop + `start`) | every setting | on the next start |
 | `ddbd start --notify-keep <duration> --private-key-ttl <duration> --max-indexes <number> --max-tags <number>` | those four, for this run only (the file is not changed) | now, until the next start without them |
-| Web Admin, Settings page | every setting; saved to `dadabada.toml` | the left column above at once; the right column on the next start, and the page says which are waiting |
+| Web Admin, Settings page | every setting; saved to `ddbd.toml` | the left column above at once; the right column on the next start, and the page says which are waiting |
 | `ddbd admin --data <folder> settings` | (shows) every setting in force, and marks each one whose saved value differs | |
 | `ddbd admin --data <folder> user ...`, `web-password`, `secret rotate` | users and levels, the web admin password, the private-key secret | at once |
 

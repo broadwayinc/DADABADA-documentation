@@ -5,7 +5,7 @@
 ## Deleting one record
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -257,7 +257,7 @@ A query without `access_level` covers every level you can read, your own `"**"` 
 ## Who may delete a record
 
 - **The uploader** can delete their own records.
-- **The admin** (the operating system user who runs DADABADA) can delete any record with `ddbd admin record del <record id>` or the web admin, read-only ones included. No network user has admin powers.
+- **The admin** (the operating system user who runs DDBD) can delete any record with `ddbd admin record del <record id>` or the web admin, read-only ones included. No network user has admin powers.
 - **The uploader of a record with `can_remove_referencing_records`** can delete the records that point to it, whoever uploaded them. See [the example below](#deleting-records-that-point-to-your-record).
 - **Read-only records** (`readonly: true`) can be deleted by the admin only. Trying as the uploader:
 

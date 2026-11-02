@@ -12,13 +12,13 @@ const playing = useVisible(root)
   <svg ref="root" class="crypto-dia" :class="{ playing }" viewBox="0 0 460 250" role="img"
     aria-labelledby="crypto-dia-title crypto-dia-desc">
     <title id="crypto-dia-title">Client-side encryption</title>
-    <desc id="crypto-dia-desc">DADABADA sends the user's enc_salt and key-derivation settings. On the device, Argon2id
+    <desc id="crypto-dia-desc">DDBD sends the user's enc_salt and key-derivation settings. On the device, Argon2id
       turns the password and the salt into a key, and AES-GCM encrypts the record data with it. Only the ciphertext is
-      saved in DADABADA; the key never leaves the device.</desc>
+      saved in DDBD; the key never leaves the device.</desc>
 
     <text class="lbl" x="0" y="14">ON THE USER'S DEVICE</text>
     <rect class="frame" x="0" y="24" width="300" height="218" />
-    <text class="lbl" x="340" y="14">DADABADA</text>
+    <text class="lbl" x="340" y="14">DDBD</text>
     <rect class="frame" x="340" y="24" width="120" height="218" />
 
     <!-- inputs -->

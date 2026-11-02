@@ -8,7 +8,7 @@ Every user and every record has an access level, a two-digit number from `"00"` 
 - **A record can be private**, with the level `"**"`. A private record can be read by its writer, by the users the writer grants access to, and by a user holding a private access key for it.
 - **A grant opens one record to one user**: a private record, or a record above that user's level.
 
-Level `00` is the lowest level, not an open one: every request needs an account, so a `00` record is readable by every user of the database, and by nobody else. No network user ever has admin powers, whatever their level; only the operating system user who runs DADABADA is the admin.
+Level `00` is the lowest level, not an open one: every request needs an account, so a `00` record is readable by every user of the database, and by nobody else. No network user ever has admin powers, whatever their level; only the operating system user who runs DDBD is the admin.
 
 `whoami` returns a user's `access_level` and `effective_access_level`, the level in force, which is lower when an agent key with `max_level` is used.
 
@@ -30,7 +30,7 @@ The admin reads every record. Two things narrow the list above:
 Reading a single record above your level is refused. bob is level 05 and asks for a level 10 record:
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group

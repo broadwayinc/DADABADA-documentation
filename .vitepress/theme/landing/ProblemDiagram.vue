@@ -4,7 +4,7 @@ import { useVisible } from './visible'
 
 // The problem in one picture. Usually access to data is decided outside the database: a server in the middle
 // checks every request against rules someone wrote, and someone has to build, host and scale it. With
-// DADABADA's writer-based access control (WBAC), the writer of each record sets who may read it and the
+// DDBD's writer-based access control (WBAC), the writer of each record sets who may read it and the
 // database enforces it, so browsers, functions and agents call it directly, each with its own sign-in. A
 // request dot travels each path: held up in the server above, straight through below.
 const root = ref<SVGElement | null>(null)
@@ -21,8 +21,8 @@ const CLIENTS = [
     aria-labelledby="prob-dia-title prob-dia-desc">
     <title id="prob-dia-title">Without a server in the middle</title>
     <desc id="prob-dia-desc">Usually, an app or an AI agent reaches its data through a server in the middle that checks
-      every request against rules someone wrote, and which someone has to build, host and scale. With DADABADA's
-      writer-based access control, the writer of each record sets who may read it, and DADABADA enforces it on every
+      every request against rules someone wrote, and which someone has to build, host and scale. With DDBD's
+      writer-based access control, the writer of each record sets who may read it, and DDBD enforces it on every
       request, so a browser, a serverless function and an AI agent each call it directly with their own sign-in.</desc>
 
     <!-- usually -->
@@ -48,8 +48,8 @@ const CLIENTS = [
 
     <line class="split-line" x1="20" y1="152" x2="500" y2="152" />
 
-    <!-- with DADABADA -->
-    <text class="lbl" x="20" y="180">WITH DADABADA</text>
+    <!-- with DDBD -->
+    <text class="lbl" x="20" y="180">WITH DDBD</text>
     <g v-for="(c, i) in CLIENTS" :key="c.t">
       <rect class="box" x="20" :y="194 + i * 46" width="110" height="38" />
       <text class="strong" x="32" :y="210 + i * 46">{{ c.t }}</text>
@@ -59,7 +59,7 @@ const CLIENTS = [
     </g>
     <text class="note" x="146" y="186">nothing in the middle</text>
     <rect class="box dd" x="300" y="194" width="200" height="130" />
-    <text class="strong big" x="314" y="220">DADABADA</text>
+    <text class="strong big" x="314" y="220">DDBD</text>
     <text class="muted" x="314" y="244">WBAC: the writer of</text>
     <text class="muted" x="314" y="262">each record sets who</text>
     <text class="muted" x="314" y="280">may read it, checked</text>
@@ -104,7 +104,7 @@ text { fill: var(--dd-ink); font-size: 12.5px; }
   54% { opacity: 1; transform: translateX(254px); }
   62%, 100% { opacity: 0; transform: translateX(254px); }
 }
-/* below: each client straight to DADABADA */
+/* below: each client straight to DDBD */
 .dot-b0 { animation-name: dot-b; animation-delay: 0s; }
 .dot-b1 { animation-name: dot-b; animation-delay: 0.18s; }
 .dot-b2 { animation-name: dot-b; animation-delay: 0.36s; }

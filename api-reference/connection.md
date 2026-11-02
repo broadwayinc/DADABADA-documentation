@@ -1,12 +1,12 @@
 # API Reference: Connection
 
-This page covers what every method shares: how a call is made, trusting the certificate, calls from a browser, the three session methods (`login`, `logout`, `whoami`), the error envelope, the failed-login slowdown and paging. DADABADA is called with HTTPS requests that carry a JSON body, so any language with an HTTP client can use it; there is no client library.
+This page covers what every method shares: how a call is made, trusting the certificate, calls from a browser, the three session methods (`login`, `logout`, `whoami`), the error envelope, the failed-login slowdown and paging. DDBD is called with HTTPS requests that carry a JSON body, so any language with an HTTP client can use it; there is no client library.
 
 ## Calling
 
 | part | rule |
 |---|---|
-| URL | `POST http://<server address>:<port>/v1/<method>` (`https://` when HTTPS is served, by a load balancer in front of DADABADA or by DADABADA itself with `--tls`), for example `POST http://localhost:7070/v1/postRecord`. `<method>` is the method name, written as in this reference. The port is the `port` setting: `7070` unless `ddbd init --port` chose another. |
+| URL | `POST http://<server address>:<port>/v1/<method>` (`https://` when HTTPS is served, by a load balancer in front of DDBD or by DDBD itself with `--tls`), for example `POST http://localhost:7070/v1/postRecord`. `<method>` is the method name, written as in this reference. The port is the `port` setting: `7070` unless `ddbd init --port` chose another. |
 | Body | One JSON object. An empty body counts as `{}`. Send `Content-Type: application/json`; it is good practice but not required, because the body is read as JSON either way. A body that is not valid JSON answers `400 INVALID_REQUEST` `"The body is not valid JSON: <reason>"`. |
 | Token | `Authorization: Bearer <token>` on every call except [`login`](#login), with `<token>` (angle brackets included) replaced by a session token `s_...` from `login` or an agent key `dk_...`: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. An agent key is sent the same way and needs no login. Only [`listen`](/api-reference/database#listen) also takes the token as `?token=<token>` in the URL, for a browser `EventSource`; on every other call `?token=` is ignored, and a call without the header answers `401 UNAUTHORIZED` `"Sign in first: send Authorization: Bearer <session token or agent key>."` |
 | Unknown keys | [`postRecord`](/api-reference/database#postrecord) and [`postRecords`](/api-reference/database#postrecords) refuse unknown keys in `config`, `config.collection` and `config.source`; [`getRecords`](/api-reference/database#getrecords) refuses them in `query` and `query.index`. The answer is `400 INVALID_REQUEST` `"Unknown <object> key \"<key>\". Allowed: ..."`. The methods whose body is `{query, fetch}` ([`getRecords`](/api-reference/database#getrecords), [`getCollections`](/api-reference/database#getcollections), [`getTags`](/api-reference/database#gettags), [`getIndexes`](/api-reference/database#getindexes), [`getUniqueId`](/api-reference/database#getuniqueid), [`getFeed`](/api-reference/database#getfeed)) refuse any key at the top of the body other than `query` and `fetch`: `400 INVALID_REQUEST` `"Unknown key \"<key>\". The body is {\"query\": {...}, \"fetch\": {...}}; query fields go inside query."`. Other methods ignore keys they do not use. |
@@ -15,12 +15,12 @@ This page covers what every method shares: how a call is made, trusting the cert
 | GET | `GET /v1/listen` is the only GET method (see [`listen`](/api-reference/database#listen)). `GET /v1` answers `{name, version}`. `GET /` serves the web admin. Any HTTP method other than POST on `/v1/<method>` answers `405 METHOD` `"Use POST for /v1/<method>."`. A path outside `/v1/` answers `404 NOT_FOUND`. |
 | Plain HTTP when TLS is on | A plain `http://` request is refused, never redirected, and not run. GET and HEAD get `400` with the text `This server only speaks HTTPS. Open https://<server address><path> instead.` Any other method gets `400 USE_HTTPS` naming the `https://` address. See [Operations](/admin/operations#plain-http-on-a-tls-port). |
 | Certificate | With `--tls`, `init` makes a self-signed certificate and prints its SHA-256 fingerprint; without it, the server speaks plain HTTP and there is no certificate. See [Trusting the certificate](#trusting-the-certificate). |
-| Browsers | Only pages that DADABADA serves itself can call it from a browser. See [Calling from a browser](#calling-from-a-browser). |
+| Browsers | Only pages that DDBD serves itself can call it from a browser. See [Calling from a browser](#calling-from-a-browser). |
 
 A complete call, reading one page of a collection:
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -74,7 +74,7 @@ alice> get products --limit 2
 
 ## Trusting the certificate
 
-This applies when DADABADA serves HTTPS itself (`init --tls`, or `tls = true`). `init --tls` makes a self-signed certificate and prints its SHA-256 fingerprint; `start` prints it again. The certificate covers the names `localhost`, `127.0.0.1` and the machine's host name (from `/etc/hostname`), so a client that checks it must connect with one of those names. Choose one of:
+This applies when DDBD serves HTTPS itself (`init --tls`, or `tls = true`). `init --tls` makes a self-signed certificate and prints its SHA-256 fingerprint; `start` prints it again. The certificate covers the names `localhost`, `127.0.0.1` and the machine's host name (from `/etc/hostname`), so a client that checks it must connect with one of those names. Choose one of:
 
 - **Pin the certificate file.** Copy `<data folder>/tls/cert.pem` to the client and trust it as the CA: `curl --cacert cert.pem`, `verify="cert.pem"` in Python requests, the `ca` option of Node's `https.Agent`.
 - **Use a certificate from a public certificate authority.** Set `tls_cert` and `tls_key` in the [settings](/admin/settings) to its PEM files and restart; clients then trust it with no extra step.
@@ -82,7 +82,7 @@ This applies when DADABADA serves HTTPS itself (`init --tls`, or `tls = true`). 
 
 ## Calling from a browser
 
-Pages that DADABADA serves itself (the [Web Admin](/admin/web-admin)) call `/v1/...` directly. A page from any other site cannot call DADABADA from the browser: DADABADA sends no cross-origin (CORS) headers and answers the browser's `OPTIONS` preflight with `405`. Call it from your own server instead, or serve your page and DADABADA from the same origin through a proxy (see [Behind a TLS proxy](/admin/operations#behind-a-tls-proxy)).
+Pages that DDBD serves itself (the [Web Admin](/admin/web-admin)) call `/v1/...` directly. A page from any other site cannot call DDBD from the browser: DDBD sends no cross-origin (CORS) headers and answers the browser's `OPTIONS` preflight with `405`. Call it from your own server instead, or serve your page and DDBD from the same origin through a proxy (see [Behind a TLS proxy](/admin/operations#behind-a-tls-proxy)).
 
 ## login
 
@@ -277,7 +277,7 @@ See [AgentKey](/api-reference/data-types#agentkey)
 ```
 
 ::: tip
-DADABADA does not encrypt records. `enc_salt` is stored on the server so that the same password gives the same key on every device, and that is the whole of the server's part. A lost password means a lost key.
+DDBD does not encrypt records. `enc_salt` is stored on the server so that the same password gives the same key on every device, and that is the whole of the server's part. A lost password means a lost key.
 :::
 
 #### Example
@@ -392,7 +392,7 @@ Every listing method takes an optional `fetch` object next to its `query`:
 {
     limit?: number;      // 1 to 1000. Default 50. Page size.
     ascending?: boolean; // Default true. getFeed defaults to false (newest first). getSubscriptions always lists in ascending order. A value that is not a boolean is ignored.
-    start_key?: string;  // The start_key of the previous page. "end" or null means from the start. A string DADABADA did not give out answers "fetch.start_key is not one DADABADA gave out."
+    start_key?: string;  // The start_key of the previous page. "end" or null means from the start. A string DDBD did not give out answers "fetch.start_key is not one DDBD gave out."
 }
 ```
 

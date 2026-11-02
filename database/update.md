@@ -7,7 +7,7 @@
 The record `VZOat4bWCVbRBGAq` is a product with five indexes, two tags and the unique id `sku-1042`. This request changes its data and nothing else:
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -702,7 +702,7 @@ Updated VZOat4m1c1X6BGAq  polls/05  {"question":"Rate the lamp"}
 ## Who may update a record
 
 - **The uploader.** Only the user who uploaded a record can change it.
-- **The admin.** The operating system user who runs DADABADA can change any record from the web admin or its admin API. No network user ever has admin powers, whatever their level.
+- **The admin.** The operating system user who runs DDBD can change any record from the web admin or its admin API. No network user ever has admin powers, whatever their level.
 - **Read-only records** (`readonly: true`) can be changed by the admin only, not even by the uploader.
 - **Moving into or out of `"**"`** (private) can be done only by the uploader, not by the admin.
 - **Agent keys** write as their user, within the key's limits: a `read_only` key refuses every write, a key with `max_level` cannot move a record above that level, a key without `private` cannot change a `"**"` record or move a record into or out of `"**"`, and a key limited to some collections cannot update records in, or move records to, other collections. See [Access Levels](/database/access-levels).

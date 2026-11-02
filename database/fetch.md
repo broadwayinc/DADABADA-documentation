@@ -24,7 +24,7 @@ Any other key in `query` is refused, so a misplaced option never goes unnoticed.
 ## By record id
 
 ::: info How to read the examples
-`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DADABADA serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
+`<token>` is your session token, the `s_...` string that [`login`](/users/login#login) answers (an [agent key](/users/agent-keys), `dk_...`, works the same way). Replace `<token>` including the angle brackets: `Authorization: Bearer s_a8OlV31qT85f0bQb6ndpDe97B09XOtVRCD5DxfQuNiz`. In the JavaScript and Python examples, `TOKEN` is a variable that holds the same string. The examples call `http://localhost:7070`, which works on the server itself with the default setup (plain HTTP). From another machine, use the HTTPS address that leads to your server, such as your load balancer's. If DDBD serves HTTPS itself (set up with `--tls`), write `https://` and, while it uses its self-signed certificate, add `-k` to the curl commands ([why](/api-reference/connection#trusting-the-certificate)).
 :::
 
 ::: code-group
@@ -1292,5 +1292,5 @@ Paging options belong in `fetch`, not in `query`:
 }
 ```
 
-`fetch.limit` outside 1 to 1000 answers `fetch.limit must be 1 to 1000.`, and a `start_key` the server did not give out answers `fetch.start_key is not one DADABADA gave out.` (both `400 INVALID_REQUEST`).
+`fetch.limit` outside 1 to 1000 answers `fetch.limit must be 1 to 1000.`, and a `start_key` the server did not give out answers `fetch.start_key is not one DDBD gave out.` (both `400 INVALID_REQUEST`).
 
