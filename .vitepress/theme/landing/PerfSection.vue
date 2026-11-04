@@ -91,8 +91,11 @@ const hover = ref<number | null>(null)
 
       <div class="filter" role="group" aria-label="Query to be fetched by share of the records">
         <span class="filter-lbl">Query to be fetched by</span>
-        <button v-for="l in LEVELS" :key="l.level" type="button" :class="{ on: level === l.level }"
-          :aria-pressed="level === l.level" @click="level = l.level">{{ l.share }}</button>
+        <!-- one group, so the four buttons wrap to the next line together -->
+        <span class="filter-btns">
+          <button v-for="l in LEVELS" :key="l.level" type="button" :class="{ on: level === l.level }"
+            :aria-pressed="level === l.level" @click="level = l.level">{{ l.share }}</button>
+        </span>
       </div>
       <p class="filter-note">100% is close to a full fetch with nothing filtered out. The low numbers are the queries
         that matter.</p>
@@ -241,13 +244,15 @@ code { font-size: 0.9em; background: var(--dd-soft); padding: 2px 6px; }
 
 .filter { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 14px; }
 .filter-note { max-width: 50rem; font-size: 14px; line-height: 1.7; color: var(--dd-muted); margin: 0 0 28px; }
-.filter-lbl { font-size: 13px; color: var(--dd-muted); margin-right: 6px; }
+.filter-lbl { font-size: 13px; color: var(--dd-muted); margin-right: 6px; white-space: nowrap; }
+.filter-btns { display: flex; flex-wrap: nowrap; gap: 8px; }
 .filter button {
   font: 600 13px/1 var(--vp-font-family-mono);
   padding: 9px 14px;
   border: 1.5px solid var(--vp-c-border);
   background: var(--dd-paper);
   color: var(--dd-ink);
+  white-space: nowrap;
 }
 .filter button.on { background: var(--dd-ink); color: var(--dd-paper); border-color: var(--dd-ink); }
 @media (hover: hover) and (pointer: fine) { .filter button:not(.on):hover { border-color: var(--dd-ink); } }
