@@ -87,7 +87,7 @@ export default defineConfig({
     ],
     outline: { level: [2, 3] },
     search: { provider: 'local' },
-    footer: { message: 'Released under the Apache License 2.0.', copyright: 'Copyright 2026 BROADWAYINC PTE. LTD.' },
+    footer: { message: 'Released under the Apache License 2.0.', copyright: 'Copyright 2026 SKAPI INC.' },
   },
   vite: {
     server: {
