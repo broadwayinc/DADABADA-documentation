@@ -305,7 +305,7 @@ const steps = [
         <p>DDBD is licensed under <span class="nw">Apache-2.0</span>. Use it, read it, change it.</p>
         <div class="actions center">
           <a class="btn brand" href="/introduction/getting-started.html">Get started</a>
-          <a class="btn alt" href="/introduction/what-is-ddbd.html">Read the docs</a>
+          <a class="btn alt" href="/introduction/what-is-ddbd.html">What is DDBD?</a>
         </div>
       </div>
     </section>
